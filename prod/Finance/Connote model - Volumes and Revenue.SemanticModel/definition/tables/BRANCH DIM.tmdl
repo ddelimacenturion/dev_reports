@@ -1,0 +1,124 @@
+table 'BRANCH DIM'
+	lineageTag: 2aa9e9c6-abf4-4667-b86f-703809d4a689
+
+	column Destination
+		dataType: string
+		lineageTag: c3f57586-172b-4157-b9df-cdf17d8b554f
+		summarizeBy: none
+		sourceColumn: Destination
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"BRANCH DIM","TableItemName":"Destination (groups)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column BranchName
+		dataType: string
+		lineageTag: a5a1fe90-d7f2-4f7d-973e-89c3cd3b1492
+		summarizeBy: none
+		sourceColumn: BranchName
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column BranchState
+		dataType: string
+		lineageTag: 9d0749ba-f109-44bb-8591-04f241b2d27b
+		summarizeBy: none
+		sourceColumn: BranchState
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column BranchSuburb
+		dataType: string
+		lineageTag: a6b3ee42-3094-4d17-9c8e-52238fb437e6
+		summarizeBy: none
+		sourceColumn: BranchSuburb
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Suburb
+		dataType: string
+		isHidden
+		lineageTag: cef82669-368c-4540-9680-2cdc0b51b453
+		summarizeBy: none
+		sourceColumn: Suburb
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column state
+		dataType: string
+		isHidden
+		lineageTag: ed523303-17d9-4eb7-acb3-a4745eee05bd
+		summarizeBy: none
+		sourceColumn: state
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: 67625cff-cdb9-4591-9e83-c8ab008dc55b
+		summarizeBy: none
+		sourceColumn: Country
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Destination (groups)' =
+			SWITCH(
+				TRUE,
+				ISBLANK('BRANCH DIM'[Destination]),
+				"(Blank)",
+				'BRANCH DIM'[Destination] IN {"ADELAIDE",
+					"ADELAIDE C"},
+				"ADELAIDE",
+				'BRANCH DIM'[Destination]
+			)
+		lineageTag: dccd207d-ef54-4299-9452-c93eca59e5c6
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "BRANCH DIM"
+				          }
+				        },
+				        "Property": "Destination"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"b","Entity":"BRANCH DIM"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"b"}},"Property":"Destination"}}],"GroupItems":[{"DisplayName":"(Blank)","BlankDefaultPlaceholder":true},{"DisplayName":"ADELAIDE","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"b"}},"Property":"Destination"}}],"Values":[[{"Literal":{"Value":"'ADELAIDE'"}}],[{"Literal":{"Value":"'ADELAIDE C'"}}]]}}}]}
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'BRANCH DIM-b8e7b428-0c7a-45ff-a7ca-704339d737a0' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("192.168.0.28", "DataWarehouse", [Query="#(tab)select #(lf)#(tab)des.destination Destination,#(lf)#(tab)DataWarehouse.dbo.branches.Suburb BranchSuburb,#(lf)#(tab)description BranchName,#(lf)#(tab)#(lf)#(tab)branch_state BranchState,#(lf)#(tab)p.Suburb,#(lf)#(tab)--p.post_code,#(lf)#(tab)p.state#(lf)#(tab)#(lf)#(tab)#(lf)#(tab)from DataWarehouse.dbo.dests des#(lf)#(lf)#(tab)left join DataWarehouse.dbo.branches on DataWarehouse.dbo.branches.branch_code = des.branch#(lf)#(tab)LEFT OUTER JOIN DataWarehouse.dbo.post_codes p on des.related_suburb = p.ref_no#(lf)WHERE is_active = 1#(lf)#(lf) --and destination like 'TENNANT CREEK'#(lf)#(lf) GROUp BY #(lf)#(lf) #(tab)des.destination ,#(lf)#(tab)DataWarehouse.dbo.branches.Suburb ,#(lf)#(tab)description ,#(tab)#(lf)#(tab)branch_state ,#(lf)#(tab)p.Suburb,#(lf)#(tab)--p.post_code,#(lf)#(tab)p.state", CommandTimeout=#duration(0, 2, 0, 0)]),
+				    #"Added Custom" = Table.AddColumn(Source, "Country", each "Australia")
+				in
+				    #"Added Custom"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+

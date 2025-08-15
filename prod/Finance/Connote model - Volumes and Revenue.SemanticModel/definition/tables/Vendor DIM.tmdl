@@ -1,0 +1,45 @@
+table 'Vendor DIM'
+	lineageTag: ac5faf02-9b28-4585-90eb-832362aaa708
+
+	column 'Vendor Account Number'
+		dataType: string
+		lineageTag: 35031680-a151-4801-bda8-4afc27d19847
+		summarizeBy: none
+		sourceColumn: Vendor Account Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		lineageTag: ab88f5f8-f2b8-4288-adb8-80b836520839
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Blocked
+		dataType: string
+		lineageTag: 0f60f17e-1d33-401d-a3aa-353dcb69a37c
+		summarizeBy: none
+		sourceColumn: Blocked
+
+		annotation SummarizationSetBy = Automatic
+
+	column VENDGROUP
+		dataType: string
+		lineageTag: aa7d38e2-2ef0-4ba7-8d6e-c7d1b4532dd8
+		summarizeBy: none
+		sourceColumn: VENDGROUP
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Vendor DIM' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("192.168.0.28", "DataWarehouse", [Query="SELECT ACCOUNTNUM 'Vendor Account Number' , [name] 'Name', CASE WHEN BLOCKED = 2 THEN 'Inactive' ELSE 'Active' END 'Blocked', VENDGROUP#(lf)  FROM AX_VendorAll#(lf)  where VENDGROUP='3RD' AND LEFT(ACCOUNTNUM,1) = '9'"])
+				in
+				    Source
+
+	annotation PBI_ResultType = Exception
+

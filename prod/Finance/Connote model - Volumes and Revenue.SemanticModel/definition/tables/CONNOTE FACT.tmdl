@@ -1,0 +1,660 @@
+table 'CONNOTE FACT'
+	lineageTag: 3af3dc7f-8e5e-4456-ae48-18aa62aed773
+
+	measure No_POD_Scan% = ```
+			
+			DIVIDE(
+			    CALCULATE(
+			        COUNTROWS('CONNOTE FACT'),
+			        'CONNOTE FACT'[POD Scan Flag] = "No"
+			    ),
+			    CALCULATE(
+			        COUNTROWS('CONNOTE FACT'),
+			        ALL('CONNOTE FACT'[c_notes_id])
+			    )
+			) * 100
+			
+			```
+		lineageTag: ad3ee768-ddaa-479e-bf14-15bce36a14b0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Account
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 223a2bda-ccdc-46f8-81bd-7f5fdf7c436b
+		summarizeBy: none
+		sourceColumn: Account
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column c_notes_id
+		dataType: string
+		isHidden
+		lineageTag: 0ab60d07-f086-480b-b258-0a48795c01cb
+		summarizeBy: none
+		sourceColumn: c_notes_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column DespatchDate
+		dataType: dateTime
+		isHidden
+		formatString: Long Date
+		lineageTag: 827e33d1-ab49-4c8a-b575-64ea66ee582e
+		summarizeBy: none
+		sourceColumn: DespatchDate
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CubicWeight
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 38f85a0a-b8f4-48ea-af77-ccf6d2da6d08
+		summarizeBy: sum
+		sourceColumn: CubicWeight
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+	column ActualWeight
+		dataType: double
+		formatString: #,0
+		lineageTag: 5832fe28-07da-4cc5-8788-ef13f73ebd13
+		summarizeBy: sum
+		sourceColumn: ActualWeight
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChargeWeight
+		dataType: double
+		formatString: #,0
+		lineageTag: 54e90831-327d-46d3-a3af-b8c82fb04d2f
+		summarizeBy: sum
+		sourceColumn: ChargeWeight
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+	column trip_no
+		dataType: string
+		isHidden
+		lineageTag: 1fe0891c-13d9-4561-bbf8-5711d87165a4
+		summarizeBy: none
+		sourceColumn: trip_no
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column TrailerRego
+		dataType: string
+		lineageTag: 966e95de-647d-490c-a3ba-dc8a41fcee32
+		summarizeBy: none
+		sourceColumn: TrailerRego
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TripNo - Trailer'
+		dataType: string
+		lineageTag: c8be4ddc-9add-41de-952e-3e9c768e891e
+		summarizeBy: none
+		sourceColumn: TripNo - Trailer
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column LitresUnloaded
+		dataType: double
+		formatString: #,0
+		lineageTag: 9f71c84c-63b6-4cba-87ec-b25a03d1417e
+		summarizeBy: sum
+		sourceColumn: LitresUnloaded
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Invoice Date'
+		dataType: dateTime
+		isHidden
+		formatString: Long Date
+		lineageTag: 0f796cb2-933a-4313-ae68-0460ead9a406
+		summarizeBy: none
+		sourceColumn: Invoice Date
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column createdBy
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 052c857b-787a-4eb3-a5b8-fc95ef3ef8f6
+		summarizeBy: sum
+		sourceColumn: createdBy
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Connote Created Date'
+		dataType: dateTime
+		isHidden
+		formatString: Short Date
+		lineageTag: 108f46ab-a5a1-486f-89aa-028dccdd00e7
+		summarizeBy: none
+		sourceColumn: Connote Created Date
+
+		changedProperty = IsHidden
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column MainCharges
+		dataType: double
+		lineageTag: 7c2fe496-4495-44c8-8e2e-78199ac2dc3f
+		summarizeBy: sum
+		sourceColumn: MainCharges
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ChargeSundry
+		dataType: double
+		lineageTag: 95d10bf3-d213-4e45-b30f-06f092112e3d
+		summarizeBy: sum
+		sourceColumn: ChargeSundry
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FuelLevy
+		dataType: double
+		lineageTag: 63752b6c-2c11-4ce5-92fa-1dafdccda3d8
+		summarizeBy: sum
+		sourceColumn: FuelLevy
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ChargeAmount
+		dataType: double
+		lineageTag: 2fdc0a34-d70b-479e-b4a4-340687f6ce0e
+		summarizeBy: sum
+		sourceColumn: ChargeAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Net Cost (Freight+Fuel+Fee)'
+		dataType: double
+		lineageTag: b7f44bb7-41bb-45a6-9dc2-906c0e803848
+		summarizeBy: sum
+		sourceColumn: Net Cost (Freight+Fuel+Fee)
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CreditAmount
+		dataType: double
+		lineageTag: 0bbef496-ee93-4aec-885d-742ec1728c1b
+		summarizeBy: sum
+		sourceColumn: CreditAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'No Of Items'
+		dataType: double
+		formatString: #,0
+		lineageTag: 8dd404d5-d8e0-42b6-a89a-ad4056f94869
+		summarizeBy: sum
+		sourceColumn: No Of Items
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Total Width'
+		dataType: double
+		lineageTag: 69f6b70d-96d3-4b89-bf09-745301b33850
+		summarizeBy: sum
+		sourceColumn: Total Width
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Total Length'
+		dataType: double
+		lineageTag: 9a40a2b8-85be-4c93-9c26-df18c48708f6
+		summarizeBy: sum
+		sourceColumn: Total Length
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column InvoiceBatchNumber
+		dataType: string
+		lineageTag: b61578b8-a87b-4205-9955-0d88fb6d659c
+		summarizeBy: none
+		sourceColumn: InvoiceBatchNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column AXSalesOrderNumber
+		dataType: string
+		lineageTag: 2227d2f9-bffe-4a6f-a18f-58c87a297b71
+		summarizeBy: none
+		sourceColumn: AXSalesOrderNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column AXSalesInvoiceNumber
+		dataType: string
+		lineageTag: 664cb0b6-3ad8-4c80-9416-ac5649a98751
+		summarizeBy: none
+		sourceColumn: AXSalesInvoiceNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Vessel No'
+		dataType: string
+		lineageTag: 711b08c2-2d2c-49b3-9ab2-b0ad4547ea5d
+		summarizeBy: none
+		sourceColumn: Vessel No
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'POD Scan Date Time'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 40e8e42c-8dcc-4d1c-b716-5bd63cd14b7b
+		summarizeBy: none
+		sourceColumn: POD Scan Date Time
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'POD Scan Flag'
+		dataType: string
+		lineageTag: 22b1e7a9-14f7-40ef-8e38-99cff68b9bb3
+		summarizeBy: none
+		sourceColumn: POD Scan Flag
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Charge Units'
+		dataType: double
+		lineageTag: 4c209238-57b1-451d-a86a-bef10867b9b7
+		summarizeBy: sum
+		sourceColumn: Charge Units
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'POD Scan Type'
+		dataType: string
+		lineageTag: 59121165-7fe6-478d-9212-ac9b40013827
+		summarizeBy: none
+		sourceColumn: POD Scan Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sender Postcode'
+		dataType: string
+		lineageTag: 5a2629ea-c0ae-4630-a4b2-5e09d9f01b49
+		summarizeBy: none
+		sourceColumn: Sender Postcode
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sender Postcode State'
+		dataType: string
+		lineageTag: d5026acf-4a43-4a63-9697-d11a03970c24
+		summarizeBy: none
+		sourceColumn: Sender Postcode State
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Service Lane'
+		dataType: string
+		lineageTag: d0e4f4c7-6b9a-4b58-a051-2d735efd23d1
+		summarizeBy: none
+		sourceColumn: Service Lane
+
+		annotation SummarizationSetBy = Automatic
+
+	column CF
+		dataType: double
+		lineageTag: 67652ec4-82b0-4990-be19-a177cc9aefd9
+		summarizeBy: sum
+		sourceColumn: CF
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'CF Fuel Levy'
+		dataType: double
+		lineageTag: 0b4706a3-6207-4c2a-9b22-eb07e02c4a9e
+		summarizeBy: sum
+		sourceColumn: CF Fuel Levy
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column HF
+		dataType: double
+		lineageTag: d4f9ee84-69da-436a-8039-601389f187cf
+		summarizeBy: sum
+		sourceColumn: HF
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'HF Fuel Levy'
+		dataType: double
+		lineageTag: 205f0124-c28f-4b6a-b13a-3c7ba2ada7ee
+		summarizeBy: sum
+		sourceColumn: HF Fuel Levy
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PU
+		dataType: double
+		lineageTag: d8acb6ff-ac68-49ec-b5d1-068218fb23ed
+		summarizeBy: sum
+		sourceColumn: PU
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'PU Fuel Levy'
+		dataType: double
+		lineageTag: 2cc9376f-8966-47f7-b779-922c721c09ff
+		summarizeBy: sum
+		sourceColumn: PU Fuel Levy
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column P
+		dataType: double
+		lineageTag: 4a4488dc-0bed-409e-8204-593928c50dae
+		summarizeBy: sum
+		sourceColumn: P
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'P Fuel Levy'
+		dataType: double
+		lineageTag: d9170ea2-495f-4a0e-b565-b22f97965e61
+		summarizeBy: sum
+		sourceColumn: P Fuel Levy
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Charge Description'
+		dataType: string
+		lineageTag: df26bf26-972e-46fb-85c9-3b2faa19a155
+		summarizeBy: none
+		sourceColumn: Charge Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column T1
+		dataType: double
+		lineageTag: 0e3c3c6d-6189-4660-9c1c-943146ec00d9
+		summarizeBy: sum
+		sourceColumn: T1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'T1 Fuel Levy'
+		dataType: double
+		lineageTag: c7ddca7d-a196-4bf6-9319-76fedd9ee918
+		summarizeBy: sum
+		sourceColumn: T1 Fuel Levy
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column T3
+		dataType: double
+		lineageTag: b3c0415e-26cc-4146-82eb-af0d8074c1eb
+		summarizeBy: sum
+		sourceColumn: T3
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'T3 Fuel Levy'
+		dataType: double
+		lineageTag: 194508d9-e9f4-4bae-9705-133d0c8aceeb
+		summarizeBy: sum
+		sourceColumn: T3 Fuel Levy
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column T8
+		dataType: double
+		lineageTag: 22cc0d09-8357-4816-82ab-6058535ce822
+		summarizeBy: sum
+		sourceColumn: T8
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'T8 Fuel Levy'
+		dataType: double
+		lineageTag: a8e6b9d7-8f77-41e0-9633-bba2fdae330c
+		summarizeBy: sum
+		sourceColumn: T8 Fuel Levy
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column T12
+		dataType: double
+		lineageTag: 656c0576-c0f7-40b9-93e6-61227768997e
+		summarizeBy: sum
+		sourceColumn: T12
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'T12 Fuel Levy'
+		dataType: double
+		lineageTag: 92fd33e6-2c61-4afe-a6f0-ac6d66c0167c
+		summarizeBy: sum
+		sourceColumn: T12 Fuel Levy
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column T24
+		dataType: double
+		lineageTag: 30ac6300-7f21-47fd-a049-66b5bd0919ac
+		summarizeBy: sum
+		sourceColumn: T24
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'T24 Fuel Levy'
+		dataType: double
+		lineageTag: 0845792b-8a2e-43a4-ae9c-d2f63bebaddf
+		summarizeBy: sum
+		sourceColumn: T24 Fuel Levy
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column D
+		dataType: double
+		lineageTag: 30f474fa-d940-4700-9eaf-84cb6b008d41
+		summarizeBy: sum
+		sourceColumn: D
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'D Fuel Levy'
+		dataType: double
+		lineageTag: 85388a1b-c868-4ec5-87b2-a463e73fc7f1
+		summarizeBy: sum
+		sourceColumn: D Fuel Levy
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DE
+		dataType: double
+		lineageTag: 9d659bbf-3d6e-416d-bc01-426780dab70d
+		summarizeBy: sum
+		sourceColumn: DE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'DE Fuel Levy'
+		dataType: double
+		lineageTag: e5384822-0b0c-46ac-9eb6-4fe4df68cb24
+		summarizeBy: sum
+		sourceColumn: DE Fuel Levy
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column BC
+		dataType: double
+		lineageTag: 122a2712-734f-4777-bc77-ed885bf083ea
+		summarizeBy: sum
+		sourceColumn: BC
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'BC Fuel Levy'
+		dataType: double
+		lineageTag: 5f369469-4ef0-41ad-abca-3c54630e11da
+		summarizeBy: sum
+		sourceColumn: BC Fuel Levy
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SenderSuburb
+		dataType: string
+		lineageTag: 4c918eb4-b331-402f-a9f4-0686d58ac7f7
+		summarizeBy: none
+		sourceColumn: SenderSuburb
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReceiverSuburb
+		dataType: string
+		lineageTag: f3588979-1a1e-41fe-ab20-1a1dcd55e462
+		summarizeBy: none
+		sourceColumn: ReceiverSuburb
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReceiverPostcode
+		dataType: string
+		lineageTag: ed692d97-0307-45ea-819c-c44586405a31
+		summarizeBy: none
+		sourceColumn: ReceiverPostcode
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChargeTypes
+		dataType: string
+		lineageTag: e9f6d6bd-f008-42b8-bad0-fe7b0b00b681
+		summarizeBy: none
+		sourceColumn: ChargeTypes
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'CONNOTE FACT-b1e014d1-5075-4212-a41e-5da7832d42ad' = m
+		mode: import
+		source = ```
+				let
+				    Source = Sql.Database("192.168.0.28", "DataWarehouse", [Query="SELECT *#(lf)FROM vwConnoteFact", CommandTimeout=#duration(0, 2, 30, 0)]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"DespatchDate", type date}, {"Connote Created Date", type date}, {"Invoice Date", type date}}),
+				    #"POD scan flag" = Table.AddColumn(#"Changed Type", "POD Scan Flag", each if [POD Scan Date Time] = null then "No" else "Yes"),
+				    #"Added Custom" = Table.AddColumn(#"POD scan flag", "Sender Postcode State", each try if Text.StartsWith([Sender Postcode], "3") then "VIC" 
+				else if Text.StartsWith([Sender Postcode], "2") then "NSW" 
+				else if Text.StartsWith([Sender Postcode], "4") then "QLD" 
+				else if Text.StartsWith([Sender Postcode], "6") then "WA" 
+				else if Text.StartsWith([Sender Postcode], "7") then "TAS"
+				else if Text.StartsWith([Sender Postcode], "08") then "NT"
+				else if Text.StartsWith([Sender Postcode], "09") then "NT"
+				else if Text.StartsWith([Sender Postcode], "5") then "SA" else "N/A" otherwise "N/A")
+				in
+				    #"Added Custom"
+				```
+
+	annotation PBI_ResultType = Exception
+

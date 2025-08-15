@@ -1,0 +1,62 @@
+table 'Jurisdiction Mapping - DNU'
+	lineageTag: c1fda192-fe09-4edc-9683-51ed6dd51527
+
+	column account_no
+		dataType: string
+		isHidden
+		lineageTag: 00c14978-7f4e-4419-ad44-6d0fe668bb7e
+		summarizeBy: none
+		sourceColumn: account_no
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column account_name
+		dataType: string
+		isHidden
+		lineageTag: 750d0f49-4343-4fcf-acdf-c2e47a8e93ea
+		summarizeBy: none
+		sourceColumn: account_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column JurisdictionId
+		dataType: int64
+		formatString: 0
+		lineageTag: 43bf94ff-daf4-4fd2-ab3b-bba645a7b3b6
+		summarizeBy: none
+		sourceColumn: JurisdictionId
+
+		annotation SummarizationSetBy = User
+
+	column EastCoastCurrentCharges
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 585a4526-b79d-439c-843b-db200dab1d1c
+		summarizeBy: none
+		sourceColumn: EastCoastCurrentCharges
+
+		annotation SummarizationSetBy = Automatic
+
+	column Jurisdiction
+		dataType: string
+		lineageTag: ade39a12-eba4-4702-b245-c073ed5f041c
+		summarizeBy: none
+		sourceColumn: Jurisdiction
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Jurisdiction Mapping - DNU' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("192.168.0.28", "DataWarehouse", [Query="#(lf)--This one is being added to Connote Model temporarily as a snowflake to facilitate easy removal later on. It's noted that Jurisdiction is not a perfectly accurate field for determining East/West split, but is being added for VM request (to help with cross-compatibility with CT Open Connotes).#(lf)#(lf)SELECT#(lf)#(tab)WM.account_no, #(lf)#(tab)WM.account_name,#(lf)#(tab)WMX.JurisdictionId,#(lf)#(tab)CASE WHEN WMX.JurisdictionId = '2' OR WMX.EastCoastCurrentCharges = 1 THEN 'EAST' ELSE 'WEST' END [Jurisdiction], --Copied from CT Open Connotes - JS221223 EAST/WEST Jursidiction#(lf)#(tab)WMX.EastCoastCurrentCharges#(lf)#(lf)from wmc_master WM#(lf)#(lf)LEFT JOIN wmc_master_extra WMX on WM.account_no = WMX.account_no", CommandTimeout=#duration(0, 0, 30, 0)]),
+				    #"Temporarily Added for VM usage" = Source
+				in
+				    #"Temporarily Added for VM usage"
+
+	annotation PBI_ResultType = Table
+

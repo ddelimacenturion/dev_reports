@@ -1,0 +1,62 @@
+/// This Mapping is based on excel source any issues Zoe and Priyanka can answer
+table 'Cargo Type Mapping'
+	lineageTag: 5aa604b9-c881-4a03-abfa-7ea41aa2380f
+
+	column CargoType
+		dataType: string
+		isHidden
+		lineageTag: ce138222-f316-491a-b1fd-adf573016d90
+		summarizeBy: none
+		sourceColumn: CargoType
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	/// This Mapping is based on excel source any issues Zoe and Priyanka can answer
+	column CargoType1
+		dataType: string
+		lineageTag: 71dee89f-3af8-45ef-b0fd-b8ff6d93ce8f
+		summarizeBy: none
+		sourceColumn: CargoType1
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	/// This Mapping is based on excel source any issues Zoe and Priyanka can answer
+	column CargoType2
+		dataType: string
+		lineageTag: a24bc4bf-9346-4801-9d65-85eec43df28c
+		summarizeBy: none
+		sourceColumn: CargoType2
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	/// This Mapping is based on excel source any issues Zoe and Priyanka can answer
+	column CargoType3
+		dataType: string
+		lineageTag: 6fe274ea-4250-4bb7-8b61-36fbcbfbfa40
+		summarizeBy: none
+		sourceColumn: CargoType3
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Cargo Type Mapping-c7a28434-3294-44ae-9b9f-aef4d79f9327' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("\\ctchzlbi-gate01.ad.centurion.net.au\Shared\Cargo Type\Cargo types.xlsx"), null, true),
+				    data_Sheet = Source{[Item="data",Kind="Sheet"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(data_Sheet,{{"Column1", type text}, {"Column2", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Removed Duplicates" = Table.Distinct(#"Promoted Headers", {"CargoType"})
+				in
+				    #"Removed Duplicates"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Exception
+

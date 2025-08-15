@@ -1,0 +1,29 @@
+table 'Load Date'
+	lineageTag: b9020a46-744e-4659-b2dd-84ea63140cb4
+
+	column 'Refresh Date'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5fbfe4c0-1825-45ca-bf3d-c1d8d02f608b
+		summarizeBy: none
+		sourceColumn: Refresh Date
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Load Date-208b00c8-365b-4ade-abc4-b2f521dd868b' = m
+		mode: import
+		source =
+				let
+				    Source = DateTimeZone.SwitchZone(DateTimeZone.UtcNow(),+8,0),
+				    #"Converted to Table" = #table(1, {{Source}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Converted to Table",{{"Column1", type datetimezone}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Column1", "Refresh Date"}})
+				in
+				    #"Renamed Columns"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+

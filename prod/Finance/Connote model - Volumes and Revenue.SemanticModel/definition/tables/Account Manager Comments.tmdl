@@ -1,0 +1,79 @@
+table 'Account Manager Comments'
+	lineageTag: fb6336d9-a4c0-4839-8ae3-8430e6a07d3a
+
+	column 'Account Name'
+		dataType: string
+		isHidden
+		lineageTag: 9cb6d61a-3faf-410e-ae7f-9b5bfc119f3d
+		summarizeBy: none
+		sourceColumn: Account Name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		isHidden
+		formatString: Short Date
+		lineageTag: 0e8ffa1e-a7ae-4172-8671-6ba8133ffa22
+		summarizeBy: none
+		sourceColumn: Date
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Comment
+		dataType: string
+		lineageTag: 65818f45-3656-4b57-a97e-20a7b952056a
+		summarizeBy: none
+		sourceColumn: Comment
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Group'
+		dataType: string
+		isHidden
+		lineageTag: 8bd7e2b6-1d82-4b34-a764-5b92bc871361
+		summarizeBy: none
+		sourceColumn: Customer Group
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Account Number'
+		dataType: string
+		isHidden
+		lineageTag: 6e48f0a3-3d2e-4814-92ca-5bebd4013604
+		summarizeBy: none
+		sourceColumn: Account Number
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Account Manager Comments-d6a87e8d-97ae-4f7b-adb2-d1251c6a2632' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("\\ctchzlbi-gate01.ad.centurion.net.au\Shared\Account Manager Mapping\Account Comments.xlsx"), null, true),
+				    #"Account Manager Mapping_Sheet" = Source{[Item="Account Manager Mapping",Kind="Sheet"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(#"Account Manager Mapping_Sheet",{{"Column1", type text}, {"Column2", type text}, {"Column3", type any}, {"Column4", type any}, {"Column5", type any}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"Account Name", type text}, {"Customer Group", type text}, {"8/05/2022", type text}, {"15/05/2022", type text}, {"22/05/2022", type text}}),
+				    #"Unpivoted Other Columns" = Table.UnpivotOtherColumns(#"Changed Type1", {"Account Number","Account Name", "Customer Group"}, "Attribute", "Value"),
+				    #"Renamed Columns" = Table.RenameColumns(#"Unpivoted Other Columns",{{"Attribute", "Date"}, {"Value", "Comment"}}),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Renamed Columns",{{"Date", type date}}),
+				    #"Removed Errors" = Table.RemoveRowsWithErrors(#"Changed Type2", {"Date"}),
+				    #"Grouped Rows" = Table.Group(#"Removed Errors", {"Account Name", "Customer Group", "Account Number", "Date"}, {{"Comment", each List.Max([Comment]), type text}})
+				in
+				    #"Grouped Rows"
+
+	annotation PBI_ResultType = Table
+

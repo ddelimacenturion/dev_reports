@@ -1,0 +1,94 @@
+table 'Rate Card DIM'
+	lineageTag: 1cf386f7-6fc5-476b-8ac6-cdfd0beb9e99
+
+	column AccountNumber
+		dataType: string
+		isHidden
+		lineageTag: 45b0bde7-3c18-4288-bc98-a5c42c98b43b
+		summarizeBy: none
+		sourceColumn: AccountNumber
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column RateCardName
+		dataType: string
+		lineageTag: 56a6cc1f-884d-4c46-a3a9-654af305c1f9
+		summarizeBy: none
+		sourceColumn: RateCardName
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column FuelRateCardName
+		dataType: string
+		lineageTag: 21ec7214-3dda-4ed2-baa6-7a99b40440c8
+		summarizeBy: none
+		sourceColumn: FuelRateCardName
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Rate Card Start Date'
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 2f680415-51ae-4a63-b45f-de1367d075f3
+		summarizeBy: none
+		sourceColumn: Rate Card Start Date
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Rise & Fall ActiveFrom Date'
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: bf9da5df-5ade-4127-af33-7c1851d01451
+		summarizeBy: none
+		sourceColumn: Rise & Fall ActiveFrom Date
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Rate Card Created'
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 75f5f3e6-84dd-41f6-bb42-1472762cdfcf
+		summarizeBy: none
+		sourceColumn: Rate Card Created
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ScheduledRateCardFlag
+		dataType: string
+		lineageTag: 8046724a-cdc9-4957-a283-edf6f898f8d9
+		summarizeBy: none
+		sourceColumn: ScheduledRateCardFlag
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Rate Card DIM-e3bdf91f-bac7-45a0-967c-85cfbd2bfa77' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("192.168.0.28", "DataWarehouse", [Query="#(lf)-- Old Ratecard query as CTE, add in flag for Scheduled Rate Cards after.#(lf)WITH RateCard AS(#(lf)SELECT #(lf)#(tab)AccountNumber,#(lf)#(tab)MAX ( CASE WHEN BOINV_AccountGroup.Type = 'Rate' THEN BOINV_AccountGroup.GroupName END) RateCardName,#(lf)#(tab)MAX ( CASE WHEN BOINV_AccountGroup.Type = 'FuelLevy' THEN BOINV_AccountGroup.GroupName END) FuelRateCardName,#(lf)#(tab)--MAX(CAST(BOINV_RuleVersion.DateToApplyUTC AS DATE)) 'Rate Card Start Date',#(lf)#(tab)MAX(CASE WHEN BOINV_RuleVersion.DateToApplyUTC <= GETDATE() THEN BOINV_RuleVersion.DateToApplyUTC END) 'Rate Card Start Date',#(lf)#(tab)MAX(CAST(BOINV_RuleVersion.DateCreatedUTC AS DATE)) 'Rate Card Created',#(lf)#(tab)MAX(CAST(RF.ActiveFrom AS DATE)) 'Rise & Fall ActiveFrom Date'#(lf)#(lf)FROM BOINV_InvoiceAccount #(lf)#(lf)LEFT JOIN BOINV_AccountGroup ON BOINV_AccountGroup.id=BOINV_InvoiceAccount.AccountGroupID#(lf)LEFT JOIN BOINV_RuleVersion ON BOINV_AccountGroup.ID=BOINV_RuleVersion.AccountGroupID#(lf)LEFT JOIN BOINV_Rule ON BOINV_Rule.RuleVersionID=BOINV_RuleVersion.id#(lf)--LEFT JOIN BOINV_CollectionRule COL on COL.ID = BOINV_Rule.CollectionRuleID #(lf)--LEFT JOIN BOINV_RuleCriteria RC on RC.ID = BOINV_Rule.RuleCriteriaID #(lf)--LEFT JOIN BOINV_Action ACT on ACT.RuleID = BOINV_Rule.ID   #(lf)LEFT JOIN BOINV_RiseAndFall RF ON RF.AccountGroupID =BOINV_InvoiceAccount.AccountGroupID#(lf)#(lf)WHERE#(lf)--GroupName = 'COLES EXPRESS'#(lf)--BOINV_InvoiceAccount.AccountNumber=60549 #(lf)--AND#(lf)BOINV_AccountGroup.Type in ( 'FuelLevy','Rate')#(lf)--and BOINV_RuleVersion.Active=1#(lf)--AND BOINV_RuleVersion.DateToApplyUTC = (Select Max(RV1.DateToApplyUTC) From BOINV_RuleVersion RV1 Where RV1.AccountGroupID = BOINV_RuleVersion.AccountGroupID  AND RV1.Type in ( 'FuelLevy','Rate')AND RV1.DateToApplyUTC <= GetDate())  #(lf)--AND BOINV_Rule.Active=1#(lf)and BOINV_InvoiceAccount.Active=1#(lf)GROUP BY #(lf)AccountNumber)#(lf)#(lf)SELECT #(lf)#(tab)*#(lf)#(tab), CASE WHEN RateCardName LIKE '%SCHEDULE%' THEN 'YES' ELSE 'NO' END AS 'ScheduledRateCardFlag'#(lf)FROM RateCard", CommandTimeout=#duration(0, 2, 0, 0)]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Rate Card Start Date", type date}, {"Rise & Fall ActiveFrom Date", type date}, {"Rate Card Created", type date}})
+				in
+				    #"Changed Type"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+

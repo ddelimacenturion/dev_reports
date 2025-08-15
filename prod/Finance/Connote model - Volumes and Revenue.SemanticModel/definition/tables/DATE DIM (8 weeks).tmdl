@@ -1,0 +1,282 @@
+table 'DATE DIM (8 weeks)'
+	lineageTag: 2a10a010-19e3-4f7d-84fc-d37b21322215
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0caee02d-776d-444f-a792-ceebb1f04cfb
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column MonthNum
+		dataType: int64
+		formatString: 0
+		lineageTag: 97e04ba6-7b32-404e-a548-e747cf4cb74b
+		summarizeBy: sum
+		sourceColumn: MonthNum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: string
+		lineageTag: e46658e2-97f1-4842-beb2-2ee3e5d2428d
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthLong
+		dataType: string
+		lineageTag: a6dd52c9-b2a7-4eb8-90db-608d6fcef730
+		summarizeBy: none
+		sourceColumn: MonthLong
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: string
+		lineageTag: 75ba2393-f390-4a32-a9d7-5470b09388e4
+		summarizeBy: none
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 88dc07f3-40c4-4bb9-bb33-7cf0eb2f2a54
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column FiscalMonthNum
+		dataType: double
+		lineageTag: 9a2ca6e1-1c03-40b1-a9e9-2c56f989c7ba
+		summarizeBy: sum
+		sourceColumn: FiscalMonthNum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FiscalMonth
+		dataType: string
+		lineageTag: 1c463785-43b1-4cb7-a861-8de82981b3bb
+		summarizeBy: none
+		sourceColumn: FiscalMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column FiscalMonthLong
+		dataType: string
+		lineageTag: d17ef588-e8b0-47de-a374-12ca1ab402ed
+		summarizeBy: none
+		sourceColumn: FiscalMonthLong
+
+		annotation SummarizationSetBy = Automatic
+
+	column FiscalQuarter
+		dataType: string
+		lineageTag: 8d4dd937-9d85-4717-b87a-60a8347e5e07
+		summarizeBy: none
+		sourceColumn: FiscalQuarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column FiscalYear
+		dataType: string
+		lineageTag: aff44cbf-432f-4ce9-98c0-33deef3f8269
+		summarizeBy: none
+		sourceColumn: FiscalYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurMonthOffset
+		dataType: int64
+		formatString: 0
+		lineageTag: 0330de7e-2db5-4b17-89bc-39673b4e01a3
+		summarizeBy: sum
+		sourceColumn: CurMonthOffset
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurQuarterOffset
+		dataType: int64
+		formatString: 0
+		lineageTag: 47ae7e50-240b-49e3-86c9-48a5fe3cbd3f
+		summarizeBy: sum
+		sourceColumn: CurQuarterOffset
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurYearOffset
+		dataType: int64
+		formatString: 0
+		lineageTag: dc6c06ff-5bcf-4830-9ae2-bb8de0415ec3
+		summarizeBy: sum
+		sourceColumn: CurYearOffset
+
+		annotation SummarizationSetBy = Automatic
+
+	column FutureDate
+		dataType: string
+		lineageTag: 2aa97b4a-886f-424e-8281-ae9db6f2a341
+		summarizeBy: none
+		sourceColumn: FutureDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurFiscalYearOffset
+		dataType: string
+		lineageTag: 45705896-1765-44b3-9a4f-af6e57441b90
+		summarizeBy: none
+		sourceColumn: CurFiscalYearOffset
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthYearNum
+		dataType: int64
+		formatString: 0
+		lineageTag: 463f415c-6ed3-4190-8466-f1f61e94501b
+		summarizeBy: sum
+		sourceColumn: MonthYearNum
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthYear
+		dataType: string
+		lineageTag: 43ca149f-4721-4698-9d11-bcac18af64b1
+		summarizeBy: none
+		sourceColumn: MonthYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthYearLong
+		dataType: string
+		lineageTag: 384459bc-defc-47b3-a90b-b8ab37471d7b
+		summarizeBy: none
+		sourceColumn: MonthYearLong
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekdayNum
+		dataType: int64
+		formatString: 0
+		lineageTag: e54382b7-0734-4d8f-bd94-e622a6bf27e3
+		summarizeBy: sum
+		sourceColumn: WeekdayNum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Weekday
+		dataType: string
+		lineageTag: 386b1b8d-ca36-459a-86ed-3a594e72f52f
+		summarizeBy: none
+		sourceColumn: Weekday
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekdayWeekend
+		dataType: string
+		lineageTag: fb3a1653-00d1-438b-a5d5-c88accad217a
+		summarizeBy: none
+		sourceColumn: WeekdayWeekend
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekSequenceNum
+		dataType: double
+		lineageTag: c24239df-cf1e-44a2-a74a-815c65971096
+		summarizeBy: sum
+		sourceColumn: WeekSequenceNum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WeekDate
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: bcd1c051-963f-4b68-b7a2-f7f1229da32c
+		summarizeBy: none
+		sourceColumn: WeekDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Week of Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: f13b014e-2e6b-40b9-a5be-fa7c3b5cdb30
+		summarizeBy: sum
+		sourceColumn: Week of Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurWeekOffset
+		dataType: int64
+		formatString: 0
+		lineageTag: 0442cbe2-5169-469c-9f74-2c0b549ba5f5
+		summarizeBy: none
+		sourceColumn: CurWeekOffset
+
+		annotation SummarizationSetBy = User
+
+	column 'Day of Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: e52c9627-c55a-400d-9a52-6f7a7012de75
+		summarizeBy: sum
+		sourceColumn: Day of Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Flag_YTD
+		dataType: string
+		lineageTag: 94a9d1b8-dfee-4a31-bbdb-4edfd8b621fd
+		summarizeBy: none
+		sourceColumn: Flag_YTD
+
+		annotation SummarizationSetBy = Automatic
+
+	column Flag_MTD
+		dataType: string
+		lineageTag: 32ca057b-2f7f-45ee-b251-941886ca039f
+		summarizeBy: none
+		sourceColumn: Flag_MTD
+
+		annotation SummarizationSetBy = Automatic
+
+	column Flag_QTD
+		dataType: string
+		lineageTag: 58eae78d-e6f5-4fa9-91e7-e48963ddbc22
+		summarizeBy: none
+		sourceColumn: Flag_QTD
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurrentDayOffset
+		dataType: int64
+		formatString: 0
+		lineageTag: 26bf31fc-aab2-4303-91fc-b6cc1e905618
+		summarizeBy: sum
+		sourceColumn: CurrentDayOffset
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'DATE DIM (8 weeks)-b01e5454-910a-40e6-a614-585b2d354856' = m
+		mode: import
+		source =
+				let
+				    Source = #"DATE DIM"
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+

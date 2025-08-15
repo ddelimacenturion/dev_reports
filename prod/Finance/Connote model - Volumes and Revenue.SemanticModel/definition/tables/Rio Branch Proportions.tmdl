@@ -1,0 +1,279 @@
+table 'Rio Branch Proportions'
+	isHidden
+	lineageTag: 432de4fa-285f-4347-aa95-21a2d63b2cae
+
+	measure 'Branch Proportion (RIO)' = MIN('Rio Branch Proportions'[Branch %])
+		formatString: 0.00%;-0.00%;0.00%
+		isHidden
+		lineageTag: f5fd0abd-9dc8-46aa-9a18-b64c4618c51c
+
+		changedProperty = IsHidden
+
+	measure 'Branch Revenue' = [Freight Charge]*[Branch Proportion (RIO)]
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		isHidden
+		lineageTag: e8916b2f-ecd7-488e-9713-a76f4d472382
+
+		changedProperty = IsHidden
+
+	column Service
+		dataType: string
+		isHidden
+		lineageTag: 19f3752d-c67b-4033-9c24-e81a591c5596
+		summarizeBy: none
+		sourceColumn: Service
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Hub
+		dataType: string
+		isHidden
+		lineageTag: 816e343f-2b2f-4e40-a46c-94461b2f7b21
+		summarizeBy: none
+		sourceColumn: Hub
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Unit
+		dataType: string
+		isHidden
+		lineageTag: 25d1360e-439e-4890-8804-4824c00d9373
+		summarizeBy: none
+		sourceColumn: Unit
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column R&F
+		dataType: string
+		isHidden
+		lineageTag: 397d854f-6a8b-4739-b988-660d132fb8fe
+		summarizeBy: none
+		sourceColumn: R&F
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Perth to Hub'
+		dataType: double
+		isHidden
+		lineageTag: 8d369e38-ef93-4517-a9ad-930d39f4d74c
+		summarizeBy: sum
+		sourceColumn: Perth to Hub
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Hub to Site'
+		dataType: double
+		isHidden
+		lineageTag: 5f1f4e15-e60f-4646-9602-6902ac48a29d
+		summarizeBy: sum
+		sourceColumn: Hub to Site
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Service Lane'
+		dataType: string
+		isHidden
+		lineageTag: b2986d50-1a8e-495a-9369-583c8147355a
+		summarizeBy: none
+		sourceColumn: Service Lane
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Hub to Site_1'
+		dataType: double
+		isHidden
+		lineageTag: 4e2ea5a1-d149-487f-984e-9302cf7754d9
+		summarizeBy: sum
+		sourceColumn: Hub to Site_1
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Trip Charges'
+		dataType: double
+		isHidden
+		lineageTag: b2b3e147-7f1c-47df-8c0f-b51125c8e643
+		summarizeBy: sum
+		sourceColumn: Trip Charges
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CFee
+		dataType: double
+		isHidden
+		lineageTag: 0342544a-3b81-48dc-987e-39d6dabf88e5
+		summarizeBy: sum
+		sourceColumn: CFee
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Pth to site'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: f57d07b4-66fc-48cc-a8b0-057d052b0dde
+		summarizeBy: sum
+		sourceColumn: Pth to site
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Hub to site.1'
+		dataType: double
+		isHidden
+		lineageTag: b9a11dd2-8640-4e81-a397-abf76a84c439
+		summarizeBy: sum
+		sourceColumn: Hub to site.1
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Pth to hub'
+		dataType: double
+		isHidden
+		lineageTag: 4d819e30-47d9-42a9-b064-fc88c21e7479
+		summarizeBy: sum
+		sourceColumn: Pth to hub
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column HTS
+		dataType: double
+		isHidden
+		lineageTag: ba6428ae-1a7f-4544-92d0-5ad29a33dd39
+		summarizeBy: sum
+		sourceColumn: HTS
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PTH
+		dataType: double
+		isHidden
+		lineageTag: 174588b8-73d9-45a1-a935-23af1da11f5d
+		summarizeBy: sum
+		sourceColumn: PTH
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PTS
+		dataType: double
+		isHidden
+		lineageTag: 12928a5f-0562-4f28-a75e-5c0d0207697d
+		summarizeBy: sum
+		sourceColumn: PTS
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Branch %'
+		dataType: double
+		isHidden
+		lineageTag: 89d1214b-c0eb-45e5-9006-80725574c7ae
+		summarizeBy: sum
+		sourceColumn: Branch %
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Account Name'
+		dataType: string
+		isHidden
+		lineageTag: da755629-1a3d-462c-b4c6-939313c5de7b
+		summarizeBy: none
+		sourceColumn: Account Name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Account No'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 29e88222-80e4-41ea-8685-b0b2a595d28c
+		summarizeBy: sum
+		sourceColumn: Account No
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Destination
+		dataType: string
+		isHidden
+		lineageTag: 33f73b72-20fd-4ef6-8d37-bc5b672cd8fa
+		summarizeBy: none
+		sourceColumn: Destination
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Rio Branch Proportions' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("\\ctchzlbi-gate01.ad.centurion.net.au\Shared\Rio Branch Proportions\Rio Branch Proportions.xlsx"), null, true),
+				    #"Transport - Forward Freight_Sheet" = Source{[Item="Transport - Forward Freight",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Transport - Forward Freight_Sheet", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Service", type text}, {"Hub", type text}, {"Unit", type text}, {"R&F", type text}, {"Perth to Hub", type number}, {"Hub to Site", type number}, {"Service Lane", type text}, {"Hub to Site_1", type number}, {"Trip Charges", type number}, {"CFee", type number}, {"Pth to site", Int64.Type}, {"Hub to site", type number}, {"Pth to hub", type number}, {"HTS", type number}, {"PTH", type number}, {"PTS", type number}, {"Branch %", type number}, {"Account Name", type text}, {"Account No", Int64.Type}, {"Destination", type text}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Hub to site", "Hub to site.1"}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Renamed Columns", each ([Destination] <> null))
+				in
+				    #"Filtered Rows"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,106 @@
+table 'Origin BRANCH DIM'
+	lineageTag: 3e04a710-eac0-4213-9518-a51507c1c4e5
+
+	column Origin
+		dataType: string
+		lineageTag: 7850d2d0-5a65-454b-9564-324a3accb829
+		summarizeBy: none
+		sourceColumn: Origin
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Origin BRANCH DIM","TableItemName":"Origin (groups)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column OriginBranchSuburb
+		dataType: string
+		lineageTag: b652213f-a6a2-4cba-9451-b0933d22c910
+		summarizeBy: none
+		sourceColumn: OriginBranchSuburb
+
+		annotation SummarizationSetBy = Automatic
+
+	column OriginBranchName
+		dataType: string
+		lineageTag: 4dadbbc3-53df-408d-a9cc-ebc1b41bf956
+		summarizeBy: none
+		sourceColumn: OriginBranchName
+
+		annotation SummarizationSetBy = Automatic
+
+	column OriginBranchState
+		dataType: string
+		lineageTag: 44af4b80-0752-4b0f-b0b1-ca4b9c613ffa
+		summarizeBy: none
+		sourceColumn: OriginBranchState
+
+		annotation SummarizationSetBy = Automatic
+
+	column OriginSuburb
+		dataType: string
+		lineageTag: 489789ba-8bb9-4351-84da-464ebe00f85a
+		summarizeBy: none
+		sourceColumn: OriginSuburb
+
+		annotation SummarizationSetBy = Automatic
+
+	column Originstate
+		dataType: string
+		lineageTag: d89d8e31-3b01-479e-b197-bf6bd1357ec2
+		summarizeBy: none
+		sourceColumn: Originstate
+
+		annotation SummarizationSetBy = Automatic
+
+	column OriginCountry
+		dataType: string
+		lineageTag: 662063b0-fac1-4369-b5f6-1759f54b8ace
+		summarizeBy: none
+		sourceColumn: OriginCountry
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Origin (groups)' =
+			SWITCH(
+				TRUE,
+				ISBLANK('Origin BRANCH DIM'[Origin]),
+				"(Blank)",
+				'Origin BRANCH DIM'[Origin] IN {"ADELAIDE",
+					"ADELAIDE C"},
+				"ADELAIDE",
+				'Origin BRANCH DIM'[Origin]
+			)
+		lineageTag: d9e7f8b8-d1d9-4286-9249-516ba02561f1
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "Origin BRANCH DIM"
+				          }
+				        },
+				        "Property": "Origin"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"o","Entity":"Origin BRANCH DIM"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"o"}},"Property":"Origin"}}],"GroupItems":[{"DisplayName":"(Blank)","BlankDefaultPlaceholder":true},{"DisplayName":"ADELAIDE","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"o"}},"Property":"Origin"}}],"Values":[[{"Literal":{"Value":"'ADELAIDE'"}}],[{"Literal":{"Value":"'ADELAIDE C'"}}]]}}}]}
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Origin BRANCH DIM-68a58919-c26e-489e-9ee7-ae8656890242' = m
+		mode: import
+		source =
+				let
+				    Source = #"BRANCH DIM",
+				    #"Renamed Columns" = Table.RenameColumns(Source,{{"Destination", "Origin"}, {"BranchSuburb", "OriginBranchSuburb"}, {"BranchName", "OriginBranchName"}, {"BranchState", "OriginBranchState"}, {"Suburb", "OriginSuburb"}, {"state", "Originstate"}, {"Country", "OriginCountry"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_ResultType = Table
+

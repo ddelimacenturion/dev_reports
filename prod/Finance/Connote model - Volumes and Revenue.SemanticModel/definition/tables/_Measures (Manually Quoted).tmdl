@@ -1,0 +1,72 @@
+table '_Measures (Manually Quoted)'
+	lineageTag: 1bff627f-a1ce-4768-8c68-e30691f0c796
+
+	measure 'Symbol (Variance)' = IF([Variance (Proportion Quoted)]<0,UNICHAR("9660"),UNICHAR("9650"))
+		lineageTag: f1fafb95-9184-45dc-b5e6-f9099d99b421
+
+	measure 'Variance (Proportion Auto Priced)' = ([Proportion Auto Priced LW] - [Proportion Auto Priced Prev 12])/[Proportion Auto Priced Prev 12]
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 0d88db8b-aeb7-46dc-945e-d07e8c52fb70
+
+	measure 'Proportion Quoted' = CALCULATE(COUNT('CONNOTE FACT'[c_notes_id]),FILTER('CONNOTE DIM','CONNOTE DIM'[Calculated/Quoted Flag] = "Quoted"))/COUNT('CONNOTE FACT'[c_notes_id])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 62673499-77f9-4e12-945b-24c4fed143f4
+
+	measure 'Proportion Auto Priced Prev 12' =
+			CALCULATE(
+			        [Proportion Auto Priced],
+			        'INVOICE Date DIM'[CurWeekOffset] < -1, 'INVOICE DATE DIM'[CurWeekOffset] >= -14)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 78609760-d7ff-4c38-833e-36b1bfdad762
+
+	measure 'Proportion Auto Priced' = 1 - [Proportion Quoted]
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 47b2e87f-0b99-43b6-a7ed-bfb347d4b962
+
+	measure 'Proportion Auto Priced LW' =
+			CALCULATE(
+			        [Proportion Auto Priced],
+			        'INVOICE Date DIM'[CurWeekOffset] = -1)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 0acff9a9-c643-4f99-afe3-70e290985dbc
+
+	measure 'Proportion Quoted LW' =
+			CALCULATE(
+			        [Proportion Quoted],
+			        'INVOICE Date DIM'[CurWeekOffset] = -1)+0
+		formatString: 0%;-0%;0%
+		lineageTag: c7a02e34-f506-41c5-bfec-0108e094c5ec
+
+	measure 'Proportion Quoted Prev 12' =
+			CALCULATE(
+			        [Proportion Quoted],
+			        'INVOICE Date DIM'[CurWeekOffset] < -1, 'INVOICE DATE DIM'[CurWeekOffset] >= -14)
+		lineageTag: 775cadbf-70d5-46cf-aaa1-512dd54afeae
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Variance (Proportion Quoted)' = ([Proportion Quoted LW] - [Proportion Quoted Prev 12])/[Proportion Quoted Prev 12]+0
+		formatString: 0%;-0%;0%
+		lineageTag: 9445d306-1029-40f3-9813-fae7be216067
+
+	column Column1
+		dataType: string
+		isHidden
+		lineageTag: 4009f79b-b64e-4e87-9477-2494bb34f93b
+		summarizeBy: none
+		sourceColumn: Column1
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '_Measures (Manually Quoted)' = m
+		mode: import
+		source =
+				let
+				    Source = #"_Invoice Measures"
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+

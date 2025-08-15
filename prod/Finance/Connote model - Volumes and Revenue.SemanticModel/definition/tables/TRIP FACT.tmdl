@@ -1,0 +1,104 @@
+table 'TRIP FACT'
+	lineageTag: e61d0c96-6b9d-42c7-ac0a-308793efe1ef
+
+	column trip_no
+		dataType: string
+		lineageTag: bf54355e-2ea3-4aad-ac6f-532ed72fcb0f
+		summarizeBy: none
+		sourceColumn: trip_no
+
+		annotation SummarizationSetBy = Automatic
+
+	column DespatchDate
+		dataType: dateTime
+		isHidden
+		formatString: Short Date
+		lineageTag: e4693bd0-d500-45b1-b417-510d135aefca
+		summarizeBy: none
+		sourceColumn: DespatchDate
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column TripOrigin
+		dataType: string
+		lineageTag: 3f571c87-0349-4895-a85b-b5738b73fec5
+		summarizeBy: none
+		sourceColumn: TripOrigin
+
+		annotation SummarizationSetBy = Automatic
+
+	column TripDestination
+		dataType: string
+		lineageTag: 1f26f2d9-e7f0-4c6b-a64d-f80a99896c44
+		summarizeBy: none
+		sourceColumn: TripDestination
+
+		annotation SummarizationSetBy = Automatic
+
+	column KMsF
+		dataType: double
+		lineageTag: d3b5d621-1de5-4b51-aab6-8071accb2a2e
+		summarizeBy: sum
+		sourceColumn: KMsF
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column KMsR
+		dataType: double
+		lineageTag: a6692ec0-2085-4df0-b5e3-b8492f97f725
+		summarizeBy: sum
+		sourceColumn: KMsR
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column KMsT
+		dataType: double
+		lineageTag: 643f8d69-62d1-411d-8394-1c9912da0f12
+		summarizeBy: sum
+		sourceColumn: KMsT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DepartedDateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 3b3dcae5-50e7-410f-a209-02ee1046f12d
+		summarizeBy: none
+		sourceColumn: DepartedDateTime
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Driver Config'
+		dataType: string
+		lineageTag: dc4d7539-121f-407b-b236-2ab2b562de75
+		summarizeBy: none
+		sourceColumn: Driver Config
+
+		annotation SummarizationSetBy = Automatic
+
+	column Subcontractor
+		dataType: string
+		lineageTag: e206116e-2d3b-408a-93ba-633d1b22251b
+		summarizeBy: none
+		sourceColumn: Subcontractor
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'TRIP FACT-884704e0-5648-4063-9e0a-25633a8dfbfa' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("192.168.0.28", "DataWarehouse", [Query="#(lf)select #(lf)#(lf)trips.trip_no,#(lf)CAST(trips.trip_date AS DATE) DespatchDate,#(lf)CAST(trips.departed_datetime AS smalldatetime) DepartedDateTime,#(lf)--SUM(trip_trailers.trlr_cost) TrailerCost,#(lf)--MAX(trip_trailers.trl_no) TrailerNo,#(lf)trips.origin TripOrigin,#(lf)trips.driver_config 'Driver Config',#(lf)trips.subcontractor 'Subcontractor',#(lf)trips.destination TripDestination,#(lf)trips.kmsF AS 'KMsF',#(lf)trips.kmsR AS 'KMsR',#(lf)trips.kmsT AS 'KMsT'#(lf)#(lf)FROM trips#(lf)#(tab)#(tab)#(lf)    LEFT JOIN trip_trailers#(lf)#(tab)ON trips.trip_no=trip_trailers.trip_no#(lf)#(lf)#(tab)Where #(lf)#(tab)--trip_date>= dateadd(yy,-1,getDate())#(lf)#(lf)YEAR(trip_date)>=  YEAR(GETDATE()) - 1#(lf)#(tab)GROUP BY #(lf)#(lf)trips.trip_no,#(lf)cast(trips.trip_date AS DATE) ,#(lf)trips.origin ,#(lf)trips.driver_config ,#(lf)trips.subcontractor ,#(lf)trips.destination ,#(lf)trips.kmsF,#(lf)trips.kmsR,#(lf)trips.kmsT,#(lf)trips.departed_datetime#(lf)#(lf)", CommandTimeout=#duration(0, 2, 0, 0)])
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+

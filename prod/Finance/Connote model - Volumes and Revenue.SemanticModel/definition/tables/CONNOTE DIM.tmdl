@@ -1,0 +1,195 @@
+table 'CONNOTE DIM'
+	lineageTag: 1032172a-abbf-4b7e-83f8-bbaf90a7da32
+
+	column Destination
+		dataType: string
+		lineageTag: ab6a36f7-810e-4ba9-a103-cde850f090e0
+		summarizeBy: none
+		sourceColumn: Destination
+
+		annotation SummarizationSetBy = Automatic
+
+	column CargoType
+		dataType: string
+		lineageTag: fc1043b4-5670-4197-8037-0ce5b2da2d2f
+		summarizeBy: none
+		sourceColumn: CargoType
+
+		annotation SummarizationSetBy = Automatic
+
+	column Invoiced
+		dataType: string
+		lineageTag: a25c4d50-792b-4b61-927a-4fbc53258957
+		summarizeBy: none
+		sourceColumn: Invoiced
+
+		annotation SummarizationSetBy = Automatic
+
+	column PurchaseOrder
+		dataType: string
+		lineageTag: db8704ed-c59e-46eb-b824-dd3964db5511
+		summarizeBy: none
+		sourceColumn: PurchaseOrder
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeliveryName
+		dataType: string
+		lineageTag: 9f6ff945-f091-4db5-9297-7fceed450d20
+		summarizeBy: none
+		sourceColumn: DeliveryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Origin
+		dataType: string
+		lineageTag: d3d6c966-f802-4c06-8f0a-e5cd9535018c
+		summarizeBy: none
+		sourceColumn: Origin
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sender
+		dataType: string
+		lineageTag: 67840cc3-6048-41b3-932a-7ab9900cf82e
+		summarizeBy: none
+		sourceColumn: Sender
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeliveryTown
+		dataType: string
+		lineageTag: add6adfb-a123-4f4d-977d-83d7dc81e1fb
+		summarizeBy: none
+		sourceColumn: DeliveryTown
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'C Note ID'
+		dataType: string
+		lineageTag: bc029150-f46a-4a3c-ab3b-ef22776aa67d
+		summarizeBy: none
+		sourceColumn: C Note ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Onhold
+		dataType: string
+		lineageTag: bedd283a-1ec0-4515-a7b4-116776e45953
+		summarizeBy: none
+		sourceColumn: Onhold
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Calculated/Quoted Flag'
+		dataType: string
+		lineageTag: 30e62890-e538-457a-ad7d-313588f0c210
+		summarizeBy: none
+		sourceColumn: Calculated/Quoted Flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreditFlag
+		dataType: string
+		lineageTag: 2937f3ac-3144-4f38-b689-3d754454c851
+		summarizeBy: none
+		sourceColumn: CreditFlag
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'IsPriced Flag'
+		dataType: string
+		lineageTag: 14fd7cc9-97dc-48cc-a91b-bc1537d347d0
+		summarizeBy: none
+		sourceColumn: IsPriced Flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column createdBy
+		dataType: string
+		lineageTag: be101823-9799-4acb-8fef-46be574af021
+		summarizeBy: none
+		sourceColumn: createdBy
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User Name'
+		dataType: string
+		lineageTag: d973e918-6780-4a9e-94b0-9355badf7b40
+		summarizeBy: none
+		sourceColumn: User Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Email
+		dataType: string
+		lineageTag: eb0486f1-9397-4ebd-9c16-85a0cc269ce5
+		summarizeBy: none
+		sourceColumn: Email
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Description Group'
+		dataType: string
+		lineageTag: 4b7487cc-fcc6-4924-9408-0a7b1e382233
+		summarizeBy: none
+		sourceColumn: Description Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'PUP No'
+		dataType: string
+		lineageTag: 25051225-5723-415e-af9f-ce6196879e19
+		summarizeBy: none
+		sourceColumn: PUP No
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User ID'
+		dataType: string
+		lineageTag: 20570e7f-3f2e-4c04-af1d-5c5af0ca4a8f
+		summarizeBy: none
+		sourceColumn: User ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Route
+		dataType: string
+		lineageTag: 15217e75-81d7-49c2-b038-557f1404fbef
+		summarizeBy: none
+		sourceColumn: Route
+
+		annotation SummarizationSetBy = Automatic
+
+	column BranchRoute
+		dataType: string
+		lineageTag: 6bfbfbd3-2507-43db-ad13-5c5dea5fb5b0
+		summarizeBy: none
+		sourceColumn: BranchRoute
+
+		annotation SummarizationSetBy = Automatic
+
+	column RateType
+		dataType: string
+		lineageTag: ee8264b6-457c-4f22-8ea7-901127c517bd
+		summarizeBy: none
+		sourceColumn: RateType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'CONNOTE DIM-17bf1eff-43c3-405d-8a93-44bc3bde6822' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("192.168.0.28", "DataWarehouse", [Query="SELECT *#(lf)FROM vwConnoteDim", CommandTimeout=#duration(0, 2, 0, 0)]),
+				    #"Removed Duplicates" = Table.Distinct(Source, {"C Note ID"}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Removed Duplicates", "RateType", each if [#"Calculated/Quoted Flag"] = "Calculated" then "Auto Rated" else if [#"Calculated/Quoted Flag"] = "Quoted" then "Manually Rated" else "N/A")
+				in
+				    #"Added Conditional Column"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

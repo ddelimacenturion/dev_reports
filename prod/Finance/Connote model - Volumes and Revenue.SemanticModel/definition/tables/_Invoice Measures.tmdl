@@ -1,0 +1,725 @@
+table '_Invoice Measures'
+	lineageTag: bc9421d7-5b16-4842-9682-c22a39b95fcc
+
+	measure 'Sundry Charge' = CALCULATE(SUM('CONNOTE FACT'[ChargeSundry]))
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: edec901b-0bfb-4e09-9368-3936260cc7f3
+
+	measure 'Freight Charge' = CALCULATE(SUM('CONNOTE FACT'[MainCharges]))
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: f4fd5363-976d-4918-9d5d-2684d6078c98
+
+		changedProperty = FormatString
+
+	measure 'Average Trailer Revenue' = [Total $ (Freight & Sundry)]/ [Trailer Count]
+		lineageTag: 1c1cf060-2a29-4e43-9835-517bfdbd8a1d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Trailer Count' =
+			--LEFT(MAX('TRIP & TRAILER DIM'[TripNo - Trailer]),3)
+			
+			CALCULATE(DISTINCTCOUNTNOBLANK('CONNOTE FACT'[TripNo - Trailer]))
+			
+			
+			--CALCULATE(DISTINCTCOUNTNOBLANK('CONNOTE FACT'[TripNo - Trailer]),LEFT('TRIP & TRAILER DIM'[TripNo - Trailer],3) = "TRP" && RIGHT('TRIP & TRAILER DIM'[TripNo - Trailer],4)<> "AUTO" && 'TRIP & TRAILER DIM'[TripNo - Trailer] <> "-" && 'TRIP & TRAILER DIM'[TripNo - Trailer] <> " ")
+		formatString: 0
+		lineageTag: 543a4cad-cd3c-4eea-b5d8-2edbf5fb1ce0
+
+	/// Cubic Weight
+	measure 'Cubic Weight' = SUM('CONNOTE FACT'[CubicWeight])
+		lineageTag: 63b625c0-9c4b-4885-bb83-4d89afdaf539
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Charge Weight=ChargeWeight / 1000
+	measure 'Charge Weight' = SUM('CONNOTE FACT'[ChargeWeight])/1000
+		lineageTag: a7916d3b-4b55-46ed-b97a-3ff3dd660d5d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Cubic Weight * 333.333
+	measure 'Cubic Conversion' = '_Invoice Measures'[Cubic Weight]*333.333
+		lineageTag: a0caea63-75a0-4d5a-9957-4b40513b68dc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Same Period Last Year' = CALCULATE([Average Trailer Revenue],SAMEPERIODLASTYEAR('DATE DIM'[Date]))
+		isHidden
+		lineageTag: e6144aa8-f270-46a2-8c25-f04761645559
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// SUM [Fuel Levy]
+	measure 'Fuel Levy' = CALCULATE(SUM('CONNOTE FACT'[FuelLevy]))
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 30b52ac9-1217-4c84-b7fb-17436d5de61c
+
+	///  sum('INVOICE FACT'[Net Cost (Freight+Fuel+Fee)])
+	measure 'Total $ (Freight,Fuel Levy & Sundry)' = sum('CONNOTE FACT'[Net Cost (Freight+Fuel+Fee)])
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: c9fe011b-b47a-4796-b6fc-69939023fa41
+
+		changedProperty = FormatString
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Total $ (Freight Charge Quoted, Fuel levy & Sundry)' = CALCULATE(SUM('CONNOTE FACT'[Net Cost (Freight+Fuel+Fee)]), 'CONNOTE DIM'[Calculated/Quoted Flag]="Quoted")
+		isHidden
+		lineageTag: 638e88a5-717a-4d18-bf89-bdbc33a52775
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total $ (Freight Charge Calculated, Fuel levy & Sundry)' = CALCULATE(SUM('CONNOTE FACT'[ChargeAmount]),'CONNOTE DIM'[Calculated/Quoted Flag]="Calculated")+[Fuel Levy Calculated]
+		isHidden
+		lineageTag: 0a3f6ad4-73c6-415d-9d2e-f878f97003e1
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Fuel Levy Quoted' = CALCULATE(SUM('CONNOTE FACT'[FuelLevy]), 'CONNOTE DIM'[Calculated/Quoted Flag]="Quoted")
+		isHidden
+		lineageTag: a56b476e-f99d-4475-b43a-c866a73b0406
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Fuel Levy Calculated' = CALCULATE(SUM('CONNOTE FACT'[FuelLevy]), 'CONNOTE DIM'[Calculated/Quoted Flag]="Calculated")
+		isHidden
+		lineageTag: e8d6c626-e266-42aa-a899-a509122198b0
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Trip Count' = CALCULATE(DISTINCTCOUNTNOBLANK('CONNOTE FACT'[trip_no] ) ,FILTER('TRIP & TRAILER DIM',LEFT('TRIP & TRAILER DIM'[trip_no],3) = "TRP"))
+		formatString: 0
+		lineageTag: cd8bcf51-d8b8-4383-8a71-252c38daee99
+
+	measure 'Chiller Freight Charge' = CALCULATE(SUM('CONNOTE FACT'[MainCharges]),'CONNOTE DIM'[CargoType]="CHILLER")
+		isHidden
+		lineageTag: 04cb5064-50f7-4b6f-b64e-0bb219b8498e
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Freezer Freight Charge' = CALCULATE(SUM('CONNOTE FACT' [MainCharges]),'CONNOTE DIM'[CargoType]="FREEZER")
+		isHidden
+		lineageTag: a3ba7942-c2b4-4fcb-b609-9aa52d989db5
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'General Freight Charge' = CALCULATE(SUM('CONNOTE FACT'[ChargeAmount]),'CONNOTE DIM'[CargoType]="GENERAL")
+		isHidden
+		lineageTag: a50dccf0-92e4-4317-b28c-4d7bf1c1647a
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'All Other Cargo Types' = [Freight Charge] -( [Freezer Freight Charge]+[General Freight Charge]+ [Chiller Freight Charge])
+		isHidden
+		lineageTag: f18d8125-0136-487f-a5b1-50083044b4a7
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// connote count (invoiced), connote count
+	measure 'Connote Count (Invoiced)' = CALCULATE(DISTINCTCOUNT('CONNOTE FACT'[c_notes_id]),'CONNOTE DIM'[Invoiced]="YES")
+		formatString: #,0
+		lineageTag: 1f7e891b-acea-46bb-a431-0d2c89636607
+
+		changedProperty = FormatString
+
+	/// Credit Amount =Credit Amount *-1
+	measure 'Credit Amount' = SUM('CONNOTE FACT'[CreditAmount])*-1
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: d2f49069-f01c-4d78-8d26-0763ae9e210d
+
+	/// Rolling 13 week Average Freight & fuel levy by Despatch date
+	measure 'R13 Freight and Fuel Levy (average)' =
+			
+			
+			VAR NumOfMonths = 91
+			VAR LastCurrentDate = MAX ( 'DATE DIM'[Date] )
+			VAR Period =
+			    DATESINPERIOD ( 'DATE DIM'[Date], LastCurrentDate, - NumOfMonths,DAY )
+			VAR Result =
+			    CALCULATE (
+			        AVERAGEX (
+			            VALUES ( 'DATE DIM'[WeekDate] ),
+			            [Total $ (Freight,Fuel Levy & Sundry)]
+			        ),
+			        Period
+			    )
+			   VAR FirstDateInPeriod = MINX ( Period, 'DATE DIM'[Date])
+			    VAR LastDateWithSales = MAX ( 'CONNOTE FACT'[DespatchDate]  )
+			RETURN
+			         IF ( FirstDateInPeriod <= LastDateWithSales, Result )
+		formatString: #,0
+		isHidden
+		lineageTag: d956e8af-e578-42d0-a4ac-f6ffda784c6c
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// Rolling 13 week Freight & fuel levy by Despatch date
+	measure 'R13 Freight and Fuel Levy (sales)' = ```
+			
+			
+			VAR NumOfMonths = 91
+			VAR LastCurrentDate = MAX ( 'DATE DIM'[Date] )
+			VAR Period =
+			    DATESINPERIOD ( 'DATE DIM'[Date], LastCurrentDate, - NumOfMonths,DAY )
+			VAR Result =
+			    CALCULATE (  
+			                       [Total $ (Freight,Fuel Levy & Sundry)]
+			        ,
+			        Period
+			    )
+			  
+			RETURN
+			            Result
+			```
+		isHidden
+		lineageTag: 9b6ff934-1f2b-41c5-86ea-e7fef8805c4a
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Rolling 13 week Last year Freight & fuel levy by Despatch date
+	measure 'R13 LY Freight and Fuel Levy (sales)' =
+			
+			CALCULATE('_Invoice Measures'[R13 Freight and Fuel Levy (sales)],SAMEPERIODLASTYEAR('DATE DIM'[Date]))
+		isHidden
+		lineageTag: 89fd2a14-b548-4184-890e-30313e66a5c2
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Diff in R13 Sales' = '_Invoice Measures'[R13 Freight and Fuel Levy (sales)]-'_Invoice Measures'[R13 LY Freight and Fuel Levy (sales)]
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 473f2899-a3cf-4269-bb00-e96a708c970c
+
+		changedProperty = FormatString
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure Variance =
+			[Total $ (Freight,Fuel Levy & Sundry)]-[R13 Freight and Fuel Levy (average)]
+			
+			//if(isblank('_Invoice Measures'[R13 Freight and Fuel Levy (average)]), blank(), [R13 Freight and Fuel Levy (average)] -[Total $ (Freight,Fuel Levy & Sundry)])
+		formatString: #,0
+		isHidden
+		lineageTag: e0f4265e-9dcc-418a-8f7a-31816350d9b2
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// [Freight Charge]+[Sundry Charge]
+	measure 'Total $ (Freight & Sundry)' = [Freight Charge]+[Sundry Charge]
+		lineageTag: b2a13b8f-ae20-4a9b-9030-678b5283525a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total $ (Freight Charge Quoted & Sundry)' = CALCULATE(SUM('CONNOTE FACT'[MainCharges]), 'CONNOTE DIM'[Calculated/Quoted Flag]="Quoted")
+		isHidden
+		lineageTag: 5d57a249-cc1e-4f47-9b0d-20b28de0f00f
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total $ (Freight Charge Calculated & Sundry)' = CALCULATE(SUM('CONNOTE FACT'[ChargeAmount]),'CONNOTE DIM'[Calculated/Quoted Flag]="Calculated")
+		isHidden
+		lineageTag: 0cca57f3-6bbf-4781-ac0b-5953bf81bb48
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Last Year Freight, fuel & Sundry charge by Invoice date
+	measure 'LY Total $ (Freight,Fuel Levy & Sundry)' = CALCULATE('_Invoice Measures'[Total $ (Freight,Fuel Levy & Sundry)],SAMEPERIODLASTYEAR('INVOICE DATE DIM'[Invoice Date]))
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 14302666-995a-4f42-be89-a9dcb6250ca2
+
+		changedProperty = FormatString
+
+	measure 'R4 Freight,Fuel Levy & Sundry (average)' =
+			
+			
+			VAR NumOfMonths = 28
+			VAR LastCurrentDate = MAX ( 'DATE DIM'[Date] )
+			VAR Period =
+			    DATESINPERIOD ( 'DATE DIM'[Date], LastCurrentDate, - NumOfMonths,DAY )
+			VAR Result =
+			    CALCULATE (
+			        AVERAGEX (
+			            VALUES ( 'DATE DIM'[WeekDate] ),
+			            [Total $ (Freight,Fuel Levy & Sundry)]
+			        ),
+			        Period
+			    )
+			   VAR FirstDateInPeriod = MINX ( Period, 'DATE DIM'[Date])
+			    VAR LastDateWithSales = MAX ( 'CONNOTE FACT'[Invoice Date] )
+			RETURN
+			         IF ( FirstDateInPeriod <= LastDateWithSales, Result )
+		isHidden
+		lineageTag: c5d6173d-4f03-49c9-b4ad-caf2f35ab3aa
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Var %' = DIVIDE([Variance],[Total $ (Freight,Fuel Levy & Sundry)],0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 8425abd0-9f71-46ee-863d-4340df5249bf
+
+		changedProperty = FormatString
+
+	measure Measure = if(isblank('_Invoice Measures'[R13 Freight and Fuel Levy (average)]), blank(), [R13 Freight and Fuel Levy (average)] -[Total $ (Freight,Fuel Levy & Sundry)])
+		isHidden
+		lineageTag: 1a088f48-e2ac-41cd-adce-a446cf5c2461
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'test R13 Freight and Fuel Levy (average)' =
+			
+			
+			VAR NumOfMonths = 13
+			VAR LastCurrentDate = MAX ( 'DATE DIM'[Date] )
+			VAR Period =
+			    DATESINPERIOD ( 'DATE DIM'[Date], LastCurrentDate, - NumOfMonths,DAY )
+			VAR Result =
+			    CALCULATE (
+			        AVERAGEX (
+			            VALUES ( 'DATE DIM'[WeekDate] ),
+			            [TopN+Others]
+			        ),
+			        Period
+			    )
+			   VAR FirstDateInPeriod = MINX ( Period, 'DATE DIM'[Date])
+			    VAR LastDateWithSales = MAX ( 'CONNOTE FACT'[DespatchDate]  )
+			RETURN
+			          IF ( FirstDateInPeriod <= LastDateWithSales, Result )
+		formatString: #,0
+		isHidden
+		lineageTag: 2779bce7-6fac-47a0-b76b-d4175b4138ec
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+	/// Rolling 13 week Average Freight & fuel levy by Invoice date
+	measure 'R13 Freight and Fuel Levy (average) Inv Date' =
+			
+			
+			VAR NumOfMonths = 91
+			VAR LastCurrentDate = MAX ( 'INVOICE DATE DIM'[Invoice Date] )
+			VAR Period =
+			    DATESINPERIOD ( 'INVOICE DATE DIM'[Invoice Date], LastCurrentDate, - NumOfMonths,DAY )
+			VAR Result =
+			    CALCULATE (
+			        AVERAGEX (
+			            VALUES ( 'INVOICE DATE DIM'[WeekDate] ),
+			            [Total $ (Freight,Fuel Levy & Sundry)]
+			        ),
+			        Period
+			    )
+			   VAR FirstDateInPeriod = MINX ( Period, 'INVOICE DATE DIM'[Invoice Date])
+			    VAR LastDateWithSales = MAX ( 'CONNOTE FACT'[Invoice Date]  )
+			RETURN
+			         IF ( FirstDateInPeriod <= LastDateWithSales, Result )
+		formatString: #,0
+		lineageTag: 03ba4bf9-b224-4ca9-8d6c-c4ee9e9edf4d
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Variance Invoice' = [Total $ (Freight,Fuel Levy & Sundry)]-[R13 Freight and Fuel Levy (average) Inv Date]
+		formatString: #,0
+		isHidden
+		lineageTag: 76be60e5-f47d-45ad-9158-434b41073cbd
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Var % Invoice' = DIVIDE([Variance Invoice],[R13 Freight and Fuel Levy (average) Inv Date],0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 852b7b44-929d-40c5-b729-371d0539300b
+
+		changedProperty = FormatString
+
+	measure TopN+Others = ```
+			
+			VAR _Top5 =
+			    TOPN (                                                            ----Get Top 5 English Product Name by SalesAmt Descending
+			        SELECTEDVALUE ( 'TopN Selection'[Value] ),
+			        SUMMARIZE (                                                      ---Get the Summarize table by English Product Name & SalesAmt
+			            ALL ( 'CUSTOMER DIM' ),
+			            'CUSTOMER DIM'[Customer Group],
+			            "Sales", [Total $ (Freight,Fuel Levy & Sundry)]
+			        ),
+			        [Sales]
+			    )
+			VAR _top5Value =                                                         ---Add the total SalesAmt of top 5 items
+			    SUMX ( _Top5, [Sales] )
+			VAR _Top1Value =                                                         ---Get the least Product SalesAmt from top 5 
+			    MINX ( _Top5, [Sales] )
+			VAR _TotalSales =                                                        ---Total Sales based on filter selection except Product filter
+			    CALCULATE ( [Total $ (Freight,Fuel Levy & Sundry)], ALL ( 'CUSTOMER DIM' ) )
+			VAR _SalesOthers = _TotalSales - _top5Value                              ---Total Sales - Top5 = to get others value
+			VAR current_product =                                                    ---Get the Current Product Name by each row
+			    SELECTEDVALUE ( 'CUSTOMER DIM'[Customer Group] )
+			VAR filter_value =                                                       ---Filtering the value which are less then top 5th product value
+			    IF ( [Total $ (Freight,Fuel Levy & Sundry)] < _Top1Value, BLANK (), [Total $ (Freight,Fuel Levy & Sundry)] )
+			VAR result =                                                             ---result 
+			    IF ( current_product = "Others", _SalesOthers + 0, filter_value )
+			RETURN
+			    result
+			```
+		formatString: #,0
+		isHidden
+		lineageTag: 1914ec90-93da-4018-825c-e50332d63080
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+	measure 'R13 TopN+Others Invoice' = ```
+			
+			VAR _Top5 =
+			    TOPN (                                                            ----Get Top 5 English Product Name by SalesAmt Descending
+			        SELECTEDVALUE ( 'TopN Selection'[Value] ),
+			        SUMMARIZE (                                                      ---Get the Summarize table by English Product Name & SalesAmt
+			            ALL ( 'CUSTOMER DIM' ),
+			            'CUSTOMER DIM'[Customer Group],
+			            "Sales", [Total $ (Freight,Fuel Levy & Sundry)]
+			        ),
+			        [Sales]
+			    )
+			VAR _top5Value =                                                         ---Add the total SalesAmt of top 5 items
+			    SUMX ( _Top5, [Sales] )
+			VAR _Top1Value =                                                         ---Get the least Product SalesAmt from top 5 
+			    MINX ( _Top5, [Sales] )
+			VAR _TotalSales =                                                        ---Total Sales based on filter selection except Product filter
+			    CALCULATE ( [R13 Freight and Fuel Levy (average) Inv Date], ALL ( 'CUSTOMER DIM' ) )
+			VAR _SalesOthers = _TotalSales - _top5Value                              ---Total Sales - Top5 = to get others value
+			VAR current_product =                                                    ---Get the Current Product Name by each row
+			    SELECTEDVALUE ( 'CUSTOMER DIM'[Customer Group] )
+			VAR filter_value =                                                       ---Filtering the value which are less then top 5th product value
+			    IF ( [Total $ (Freight,Fuel Levy & Sundry)] < _Top1Value, BLANK (), [R13 Freight and Fuel Levy (average) Inv Date] )
+			VAR result =                                                             ---result 
+			    IF ( current_product = "Others", _SalesOthers + 0, filter_value )
+			RETURN
+			    result
+			```
+		formatString: #,0
+		isHidden
+		lineageTag: fd1bef10-1b69-41c4-b34d-509eee35df35
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+	measure 'Variance TOPN' = [TopN+Others]-[R13 TopN+Others Invoice]
+		formatString: #,0
+		isHidden
+		lineageTag: 54feb915-3614-441f-ba4d-3e80dd169208
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+	measure 'Var TOPN % Invoice' = DIVIDE([Variance TOPN],[R13 TopN+Others Invoice],0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 53dddb15-9b0b-4ab0-8505-5e888c1cbf81
+
+		changedProperty = FormatString
+
+	/// Last Year Freight & Sundry charge by Invoice date
+	measure 'LY Total $ (Freight & Sundry)' = CALCULATE([Total $ (Freight & Sundry)],SAMEPERIODLASTYEAR('INVOICE DATE DIM'[Invoice Date]))
+		lineageTag: 563dd14b-3adb-4b47-be06-09421e0d4885
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// account manager target (3%), account manager target
+	measure 'Account Manager Target (3%)' = CALCULATE([Total $ (Freight & Sundry)],SAMEPERIODLASTYEAR('INVOICE DATE DIM'[Invoice Date] ))*1.03
+		lineageTag: f728ac83-d857-4303-a6b9-a2ea59d000b9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'TopN Comments' = ```
+			VAR _Top5 =
+			    TOPN (                                                            ----Get Top 5 English Product Name by SalesAmt Descending
+			        SELECTEDVALUE ( 'TopN Selection'[Value] ),
+			        SUMMARIZE (                                                      ---Get the Summarize table by English Product Name & SalesAmt
+			            ALL ( 'CUSTOMER DIM' ),
+			            'CUSTOMER DIM'[Customer Group],
+			            "Sales", [Total $ (Freight,Fuel Levy & Sundry)]
+			        ),
+			        [Sales]
+			    )
+			VAR _top5Value =                                                         ---Add the total SalesAmt of top 5 items
+			    SUMX ( _Top5, [Sales] )
+			VAR _Top1Value =                                                         ---Get the least Product SalesAmt from top 5 
+			    MINX ( _Top5, [Sales] )
+			VAR _TotalSales =                                                        ---Total Sales based on filter selection except Product filter
+			    CALCULATE ( [Total $ (Freight,Fuel Levy & Sundry)], ALL ( 'CUSTOMER DIM' ) )
+			VAR _SalesOthers = _TotalSales - _top5Value                              ---Total Sales - Top5 = to get others value
+			VAR current_product =                                                    ---Get the Current Product Name by each row
+			    SELECTEDVALUE ( 'CUSTOMER DIM'[Customer Group] )
+			VAR filter_value =                                                       ---Filtering the value which are less then top 5th product value
+			    IF ( [Total $ (Freight,Fuel Levy & Sundry)] < _Top1Value, BLANK (), MAX('Account Manager Comments'[Comment]) )
+			VAR result =                                                             ---result 
+			    IF ( current_product = "Others", " ", filter_value )
+			RETURN
+			    result
+			```
+		isHidden
+		lineageTag: fd4095c7-1997-4c5f-925b-83681186a727
+
+		changedProperty = IsHidden
+
+	measure 'Connote Count (Despatched)' = DISTINCTCOUNT('CONNOTE FACT'[c_notes_id])
+		formatString: #,0
+		lineageTag: ffb85a01-576b-4da9-a097-336d8350269f
+
+	measure 'test count trip Trailer' = CALCULATE(DISTINCTCOUNT('CONNOTE FACT'[TripNo - Trailer]),'TRIP & TRAILER DIM'[TripNo - Trailer]<>"" && 'TRIP & TRAILER DIM'[TripNo - Trailer] <> BLANK())
+		formatString: 0
+		isHidden
+		lineageTag: a9fdfea5-36a2-4b13-8ed8-4318669b7d67
+
+		changedProperty = IsHidden
+
+	measure 'R7 Freight and Fuel Levy (average)' =
+			
+			
+			VAR NumOfMonths = 49
+			VAR LastCurrentDate = MAX ( 'DATE DIM'[Date] )-7
+			VAR Period =
+			    DATESINPERIOD ( 'DATE DIM'[Date], LastCurrentDate, - NumOfMonths,DAY )
+			VAR Result =
+			    CALCULATE (
+			        AVERAGEX (
+			            VALUES ( 'DATE DIM'[WeekDate] ),
+			            [Total $ (Freight,Fuel Levy & Sundry)]
+			        ),
+			        Period
+			    )
+			   VAR FirstDateInPeriod = MINX ( Period, 'DATE DIM'[Date])
+			    VAR LastDateWithSales = MAX ( 'CONNOTE FACT'[DespatchDate]  )
+			RETURN
+			         IF ( FirstDateInPeriod <= LastDateWithSales, Result )
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 16d3bbcc-d001-46cb-9790-19c5ad17cd22
+
+	measure 'Var R7 Total $ (Freight,Fuel Levy & Sundry)' = ```
+			[Total $ (Freight,Fuel Levy & Sundry)]- [R7 Freight and Fuel Levy (average)]
+			
+			
+			```
+		formatString: 0
+		lineageTag: aa523f4f-c843-47d8-9fc9-c03f7f2dd481
+
+	measure 'Var R7 Total $ (Freight,Fuel Levy & Sundry)%' = DIVIDE([Var R7 Total $ (Freight,Fuel Levy & Sundry)],[R7 Freight and Fuel Levy (average)],0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 4694c989-0e7e-462d-b92d-a7a9c21ec661
+
+	measure 'Last 8 weeks' = ```
+			
+			
+			VAR CurrWk = MAX(  'DATE DIM (8 weeks)'[WeekDate] )
+			
+			VAR PreWk =    DATE(YEAR(CurrWk),MONTH(CurrWk),DAY(CurrWk)-49)
+			
+			    VAR Result =
+			        CALCULATE([Total $ (Freight,Fuel Levy & Sundry)],FILTER('CONNOTE FACT','CONNOTE FACT'[DespatchDate]>=PreWk && 'CONNOTE FACT'[DespatchDate]<=CurrWk))
+			RETURN
+			           Result 
+			```
+		lineageTag: 009d0ab9-1cf4-4c7f-8b03-0b74d3517fcd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Test * weeks' = ```
+			
+			//VAR CurrentWeek = SELECTEDVALUE('DATE DIM'[WeekDate])
+			VAR NumberofWeeks = 7
+			VAR LastCurrentDate = MAX ( 'DATE DIM'[WeekDate] )
+			VAR Period =
+			    DATESINPERIOD ( 'DATE DIM'[WeekDate], LastCurrentDate, - NumberofWeeks,DAY )
+			VAR Result =
+			    CALCULATE (      
+			            [Total $ (Freight,Fuel Levy & Sundry)],
+			        Period
+			    )
+			   VAR FirstDateInPeriod = MINX ( Period, 'DATE DIM'[WeekDate])
+			    VAR LastDateWithSales = MAX ( 'CONNOTE FACT'[DespatchDate]  )
+			//RETURN
+			 //        IF ( FirstDateInPeriod <= LastDateWithSales, Result )
+			RETURN
+			Result
+			```
+		lineageTag: 2b534011-609a-4b02-bda2-1da6209fa0c5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Rolling Average' = AVERAGEX(FILTER(ALLSELECTED('DATE DIM'),'DATE DIM'[Date]<=MAX('DATE DIM'[Date])),[Total $ (Freight,Fuel Levy & Sundry)])
+		lineageTag: 45e05853-9ac5-4c42-ada6-fee79bc5a738
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Last 8 weeks Avg' = ```
+			
+			
+			VAR NumOfMonths = 49
+			VAR LastCurrentDate = MAX ( 'DATE DIM (8 weeks)'[Date] )-7
+			VAR Period =
+			    DATESINPERIOD ( 'DATE DIM (8 weeks)'[Date] , LastCurrentDate, - NumOfMonths,DAY )
+			
+			VAR Result=
+			   CALCULATE (AVERAGEX(
+			        
+			            VALUES ( 'DATE DIM'[WeekDate] ),
+			            [Total $ (Freight,Fuel Levy & Sundry)]
+			        ),
+			        Period
+			    )
+			   VAR FirstDateInPeriod = MINX ( Period,  'DATE DIM (8 weeks)'[Date])
+			    VAR LastDateWithSales = MAX ( 'CONNOTE FACT'[DespatchDate]  )
+			RETURN
+			         IF ( FirstDateInPeriod <= LastDateWithSales, Result )
+			```
+		lineageTag: 1044d41f-d151-4fcd-b3d7-c13054f125b6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'oh Last 8 weeks' = CALCULATE([Total $ (Freight,Fuel Levy & Sundry)], FILTER(ALL('DATE DIM (8 weeks)'),'DATE DIM (8 weeks)'[CurWeekOffset]>=max('DATE DIM (8 weeks)'[CurWeekOffset])-7 && 'DATE DIM (8 weeks)'[CurWeekOffset]<=max('DATE DIM (8 weeks)'[CurWeekOffset])))
+		lineageTag: 3941b193-9a07-4fe2-9883-12e871449af7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Week -1' = CALCULATE([Total $ (Freight,Fuel Levy & Sundry)],'DATE DIM'[CurWeekOffset]=-1 )
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: edb074ba-a3e2-4c0b-9980-9fa4301929eb
+
+	measure 'Week -2' = CALCULATE([Total $ (Freight,Fuel Levy & Sundry)],'DATE DIM'[CurWeekOffset]=-2 )
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: a03bb633-02a0-4e2d-bec5-133b20bb9ef3
+
+	measure 'Week -3' = CALCULATE([Total $ (Freight,Fuel Levy & Sundry)],'DATE DIM'[CurWeekOffset]=-3 )
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 1c512f87-2e04-40f3-95d7-a81da915c89a
+
+	measure 'Week -4' = CALCULATE([Total $ (Freight,Fuel Levy & Sundry)],'DATE DIM'[CurWeekOffset]=-4 )
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: cad8ad1f-a6f2-4a29-9603-36fcd2bf5dd4
+
+	measure 'Week -5' = CALCULATE([Total $ (Freight,Fuel Levy & Sundry)],'DATE DIM'[CurWeekOffset]=-5 )
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 04ea8336-7425-48ba-8197-abd352252e42
+
+	measure 'Week -6' = CALCULATE([Total $ (Freight,Fuel Levy & Sundry)],'DATE DIM'[CurWeekOffset]=-6 )
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 9df60bdf-31c9-4db9-b12d-fea644f6798f
+
+	measure 'Week -7' = CALCULATE([Total $ (Freight,Fuel Levy & Sundry)],'DATE DIM'[CurWeekOffset]=-7 )
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 8024668b-e6c8-4788-96b3-e2999a1797ad
+
+	measure 'Week -8' = CALCULATE([Total $ (Freight,Fuel Levy & Sundry)],'DATE DIM'[CurWeekOffset]=-8 )
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 62383f8c-d637-4175-b89c-bf9813505f16
+
+	measure Movement($) = [Week -1]-[R7 Freight and Fuel Levy (average)]
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: ac8efe76-aba5-4873-84db-e95b313f2d62
+
+	measure 'Movement (%)' = DIVIDE([Movement($)],[R7 Freight and Fuel Levy (average)],0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 9bcebb7a-988c-4809-9f46-961e018486c8
+
+	measure 'Average Trailer Charge Weight' = SUM('CONNOTE FACT'[ChargeWeight])/ [Trailer Count]
+		formatString: #,0
+		lineageTag: 7829c5f1-2ea5-4f78-a7a6-cf880fc252f4
+
+	measure 'Average Trailer Freight Revenue' = [Freight Charge]/ [Trailer Count]
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: d46ab5e7-4291-4fac-8d12-28240c54639a
+
+	/// Last Charge Weight by Invoice Date
+	measure 'LY Charge Weight' = CALCULATE([Charge Weight],SAMEPERIODLASTYEAR('INVOICE DATE DIM'[Invoice Date]))
+		lineageTag: 07be6768-46e8-4328-9915-b66fbc9fdf11
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total $ (Freight Charge Without Credit , Fuel levy & Sundry)' = CALCULATE(SUM('CONNOTE FACT'[Net Cost (Freight+Fuel+Fee)]) -  [Credit Amount])
+		lineageTag: d71e0914-01fe-4cb8-afc0-3c9228621e2e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Var LY Total $ (Frieght, Fuel Levy & Sundry) Desp Date' = [Total $ Last Month] - [Total $ Last Month LY]
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: e2be0eb9-6184-4d05-8f6a-64c30b9bc882
+
+	measure 'LY Total $ (Freight,Fuel Levy & Sundry) Desp Date' = CALCULATE('_Invoice Measures'[Total $ (Freight,Fuel Levy & Sundry)],SAMEPERIODLASTYEAR('DATE DIM'[Date]))
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 149fac96-8f28-4fb9-83ea-ab3790248932
+
+	measure 'Total $ Last Month' = CALCULATE([Total $ (Freight,Fuel Levy & Sundry)],'DATE DIM'[CurMonthOffset] = -1)
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 5a954edb-e4d2-4807-8ca1-289d5c8603ce
+
+	measure 'Total $ Last Month LY' = CALCULATE([Total $ (Freight,Fuel Levy & Sundry)],'DATE DIM'[CurMonthOffset] = -13)
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: e792c9d9-1569-4f4d-bb72-7fd54dc049b2
+
+	column Column1
+		dataType: string
+		isHidden
+		lineageTag: b832d9c4-f07f-4e32-8b00-f85ae11156e5
+		summarizeBy: none
+		sourceColumn: Column1
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '_Invoice Measures-d0a64ef7-d7e7-4f85-be9f-39a72616edde' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

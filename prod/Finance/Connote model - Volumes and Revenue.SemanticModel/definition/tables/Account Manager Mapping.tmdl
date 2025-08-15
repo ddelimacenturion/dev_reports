@@ -1,0 +1,101 @@
+table 'Account Manager Mapping'
+	lineageTag: 62a3648e-b371-4a33-a0a7-0e3b9214b749
+
+	column 'Account Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: c710f327-a8f7-491c-80e2-58a59bed3565
+		summarizeBy: sum
+		sourceColumn: Account Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Group'
+		dataType: string
+		lineageTag: 97fb9e9d-627b-4523-8411-46ae77c3128d
+		summarizeBy: none
+		sourceColumn: Customer Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column East/West
+		dataType: string
+		lineageTag: ad968e2d-5794-4c25-bcaf-728b132e6991
+		summarizeBy: none
+		sourceColumn: East/West
+
+		annotation SummarizationSetBy = Automatic
+
+	column Branch
+		dataType: string
+		lineageTag: e44820dc-176f-4bb9-ad44-96828d5eeb0f
+		summarizeBy: none
+		sourceColumn: Branch
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Type'
+		dataType: string
+		lineageTag: 44a86b95-dd52-44aa-8c74-3543ba9041e4
+		summarizeBy: none
+		sourceColumn: Customer Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 2374e2ee-2ce0-406f-b843-8bfb2a902e4c
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Category 2'
+		dataType: string
+		lineageTag: 68469855-1b14-4519-b85e-a4668f2b82ed
+		summarizeBy: none
+		sourceColumn: Category 2
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Account Manager'
+		dataType: string
+		lineageTag: 5536be66-1172-4fbe-926e-aeb506c37d5a
+		summarizeBy: none
+		sourceColumn: Account Manager
+
+		annotation SummarizationSetBy = Automatic
+
+	column Administrator
+		dataType: string
+		lineageTag: 6eabda57-9369-422a-bf96-105053c21dbb
+		summarizeBy: none
+		sourceColumn: Administrator
+
+		annotation SummarizationSetBy = Automatic
+
+	column Coordinator
+		dataType: string
+		lineageTag: df572a49-23ae-4482-bd7d-01a91c5ccfd5
+		summarizeBy: none
+		sourceColumn: Coordinator
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Account Manager Mapping' = m
+		mode: import
+		source =
+				let
+				    Source = SharePoint.Files("https://centurionaustralia.sharepoint.com/sites/Team-CustomerService-AccountManagementEAST/", [ApiVersion = 15]),
+				    #"Filtered Rows" = Table.SelectRows(Source, each Text.Contains([Name], "Account Manager Mapping")),
+				    #"Account Manager Mapping xlsx_https://centurionaustralia sharepoint com/sites/Team-CustomerService-AccountManagementEAST/Shared Documents/Account Management Team/Administration/Account Manager Mapping/" = #"Filtered Rows"{[Name="Account Manager Mapping.xlsx",#"Folder Path"="https://centurionaustralia.sharepoint.com/sites/Team-CustomerService-AccountManagementEAST/Shared Documents/Account Management Team/Administration/Account Manager Mapping/"]}[Content],
+				    #"Imported Excel Workbook" = Excel.Workbook(#"Account Manager Mapping xlsx_https://centurionaustralia sharepoint com/sites/Team-CustomerService-AccountManagementEAST/Shared Documents/Account Management Team/Administration/Account Manager Mapping/"),
+				    #"Account Manager Mapping_Sheet" = #"Imported Excel Workbook"{[Item="Account Manager Mapping",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Account Manager Mapping_Sheet", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Account Number", Int64.Type}, {"AX Account Number", type text}, {"Account Name", type text}, {"Customer Group", type text}, {"East/West", type text}, {"Branch", type text}, {"Customer Type", type text}, {"Category", type text}, {"Category 2", type text}, {"Account Manager", type text}, {"Title", type text}, {"Division ", type text}, {"Administrator", type text}, {"Uprate Communication", type text}, {"Comments", type text}, {"Coordinator", type text}, {"AR Collector", type text}, {"Invoice Frequency", type text}, {"Invoice Method", type text}, {"Column20", type any}}),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Changed Type",{"Account Number", "Customer Group", "East/West", "Branch", "Customer Type", "Category", "Category 2", "Account Manager", "Administrator", "Coordinator"})
+				in
+				    #"Removed Other Columns"
+
+	annotation PBI_ResultType = Exception
+

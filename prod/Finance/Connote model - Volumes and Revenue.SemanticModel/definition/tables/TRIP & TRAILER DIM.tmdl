@@ -1,0 +1,71 @@
+table 'TRIP & TRAILER DIM'
+	lineageTag: 590d26f3-576e-4c50-942f-9ce7f0101008
+
+	column 'TripNo - Trailer'
+		dataType: string
+		lineageTag: 44328f44-8b9d-46a2-bff4-bae58d89e6bb
+		summarizeBy: none
+		sourceColumn: TripNo - Trailer
+
+		annotation SummarizationSetBy = Automatic
+
+	column PrimeMover
+		dataType: string
+		lineageTag: eb3743ce-a462-42e3-81b6-f24317f98b6e
+		summarizeBy: none
+		sourceColumn: PrimeMover
+
+		annotation SummarizationSetBy = Automatic
+
+	column PrimeMoverRego
+		dataType: string
+		lineageTag: dc8151f3-f3a6-4974-8de0-980d3809d153
+		summarizeBy: none
+		sourceColumn: PrimeMoverRego
+
+		annotation SummarizationSetBy = Automatic
+
+	column trip_no
+		dataType: string
+		lineageTag: 08535989-dbd6-49da-9803-33e71550f14b
+		summarizeBy: none
+		sourceColumn: trip_no
+
+		annotation SummarizationSetBy = Automatic
+
+	column trl_reg
+		dataType: string
+		lineageTag: 7b00d71e-c88e-4d30-a073-e56a289e7049
+		summarizeBy: none
+		sourceColumn: trl_reg
+
+		annotation SummarizationSetBy = Automatic
+
+	column fleet_number
+		dataType: string
+		lineageTag: 6e648f95-b477-4684-b9ce-27664973b1f8
+		summarizeBy: none
+		sourceColumn: fleet_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Equipment Description'
+		dataType: string
+		lineageTag: 2d9e208d-a246-44cc-b4f7-9f1427e3e2f2
+		summarizeBy: none
+		sourceColumn: Equipment Description
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'TRIP & TRAILER DIM-033e4a7a-e6b5-474a-80bc-532fc3d3bb6f' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("192.168.0.28", "DataWarehouse", [Query="#(lf)#(lf)#(lf)WITH#(lf)DB AS#(lf)(SELECT DISTINCT#(lf)TRIM(SUBSTRING (UPPER(det_lns.subc_trip), CHARINDEX ('\', subc_trip)+1, LEN(subc_trip) )) trip_no2#(lf)#(lf)FROM det_lns#(lf)#(tab)#(tab)#(tab)   #(tab)   #(tab)     #(lf) WHERE #(lf) #(lf)   #(tab)YEAR(det_lns.desp_date)>=  YEAR(GETDATE()) - 2#(lf)    AND LEFT(det_lns.c_notes_id,4) <> 'CAGE'#(lf)#(tab)AND LEFT(det_lns.c_notes_id,5) <> 'CTCCN')#(lf)#(lf)#(tab)SELECT DISTINCT#(lf)#(tab)--DB.trip_no2,#(lf)#(tab)CONCAT(((trip_no2)),'-',(REPLACE((trip_trailers.trl_reg), ' ',''))) AS 'TripNo - Trailer',#(lf)#(tab)trip_trailers.fleet_number,#(lf)#(tab)trips.subcontractor PrimeMover,#(lf)#(tab)trips.rego PrimeMoverRego,#(lf)#(tab)trips.trip_no,#(lf)#(tab)(REPLACE((trip_trailers.trl_reg), ' ','')) trl_reg,#(lf)#(tab)vwAXEquipmentCostCenter.Description 'Equipment Description'#(lf)#(lf)#(tab)FROM DB#(lf)#(tab)LEFT JOIN trips#(lf)#(tab)#(tab)ON trip_no2=trips.trip_no#(lf)#(lf)#(tab)LEFT JOIN trip_trailers#(lf)#(tab)#(tab)ON trip_no2=trip_trailers.trip_no#(lf)#(lf)#(tab)LEFT JOIN vwAXEquipmentCostCenter #(lf)#(tab)#(tab)ON trip_trailers.fleet_number = vwAXEquipmentCostCenter.Equipment COLLATE DATABASE_DEFAULT#(lf)#(lf)where CONCAT(((trip_no2)),'-',trip_trailers.trl_reg) not in  ('TRP533838-YV5 3EW','TRP533168-YV53EW')#(lf)#(lf)--'TRP533838-YV53EW'", CommandTimeout=#duration(0, 2, 0, 0)]),
+				    #"Filtered Rows" = Table.SelectRows(Source, each [trip_no] <> "AUTO"),
+				    #"Removed Duplicates" = Table.Distinct(#"Filtered Rows", {"TripNo - Trailer"})
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_ResultType = Table
+

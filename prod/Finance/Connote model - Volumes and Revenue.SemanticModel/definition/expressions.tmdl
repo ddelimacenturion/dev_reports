@@ -1,0 +1,22 @@
+expression DimProductOthers =
+		let
+		    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WsoQCJR0l/5KM1KJiTIaCrgJcVWwsAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Account No" = _t, #"Account Name" = _t, #"Customer Group" = _t, #"Cust Name & No" = _t]),
+		    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Account No", Int64.Type}})
+		in
+		    #"Changed Type"
+	lineageTag: 653bcaf1-0f82-456d-86d0-cc5c97efbec4
+	queryGroup: 'Adding Others'
+
+	annotation PBI_NavigationStepName = Navigation
+
+expression FactSalesOthers =
+		let
+		    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WsoQCJR0lAzCOjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Account = _t, FuelLevy = _t, ChargeAmount = _t]),
+		    #"Changed Type" = Table.TransformColumnTypes(Source,{{"FuelLevy", Int64.Type}, {"ChargeAmount", Int64.Type}})
+		in
+		    #"Changed Type"
+	lineageTag: 12ce9d6f-6845-4749-aebd-726834fbba2a
+	queryGroup: 'Adding Others'
+
+	annotation PBI_NavigationStepName = Navigation
+

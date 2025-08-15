@@ -1,0 +1,45 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-AU
+	dataAccessOptions
+		fastCombine
+		legacyRedirects
+		returnErrorValuesAsNull
+
+queryGroup 'Adding Others'
+
+	annotation PBI_QueryGroupOrder = 0
+
+annotation PBIDesktopVersion = 2.145.1105.0 (25.07)+decbc46fce458c5b8d5109d6f32a743f2ac949c8
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["CONNOTE FACT","CONNOTE DIM","DATE DIM","CUSTOMER DIM","_Invoice Measures","TRIP & TRAILER DIM","BRANCH DIM","Rate Card DIM","TRIP FACT","INVOICE DATE DIM","Cargo Type Mapping","Account Manager Mapping","Account Manager Comments","DimProductOthers","FactSalesOthers","Created DATE DIM","Origin BRANCH DIM","Load Date","DATE DIM (8 weeks)","Rio Branch Proportions","Cost Centre Mapping","Vendor DIM","Jurisdiction Mapping - DNU","_Measures (Manually Quoted)"]
+
+ref table 'CONNOTE FACT'
+ref table 'CONNOTE DIM'
+ref table 'DATE DIM'
+ref table 'CUSTOMER DIM'
+ref table '_Invoice Measures'
+ref table 'TRIP & TRAILER DIM'
+ref table 'BRANCH DIM'
+ref table 'Rate Card DIM'
+ref table 'TRIP FACT'
+ref table 'INVOICE DATE DIM'
+ref table 'Cargo Type Mapping'
+ref table 'Account Manager Comments'
+ref table 'TopN Selection'
+ref table 'Created DATE DIM'
+ref table 'Origin BRANCH DIM'
+ref table 'Load Date'
+ref table 'DATE DIM (8 weeks)'
+ref table 'Rio Branch Proportions'
+ref table 'Cost Centre Mapping'
+ref table 'Vendor DIM'
+ref table 'Jurisdiction Mapping - DNU'
+ref table 'Account Manager Mapping'
+ref table '_Measures (Manually Quoted)'
+
+ref cultureInfo en-US
+

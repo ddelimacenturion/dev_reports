@@ -1,0 +1,198 @@
+table 'CUSTOMER DIM'
+	lineageTag: f178b8a2-a85c-4129-a7cf-f8c2df73f913
+
+	column 'Account No'
+		dataType: string
+		lineageTag: 8ef18e9a-abe5-4dbb-9aa6-06404e058884
+		summarizeBy: none
+		sourceColumn: Account No
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Account Name'
+		dataType: string
+		lineageTag: 38222570-000a-4ce9-a887-6aadd7ee4c4c
+		summarizeBy: none
+		sourceColumn: Account Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column AxCustomerAccountCode
+		dataType: string
+		lineageTag: d25b8e95-6ec6-40b3-90c0-bcaeba2b9c42
+		summarizeBy: none
+		sourceColumn: AxCustomerAccountCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'AX Flag'
+		dataType: string
+		lineageTag: a010f266-d83a-4f89-b722-33b5051a466a
+		summarizeBy: none
+		sourceColumn: AX Flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Cust Name & No'
+		dataType: string
+		lineageTag: dab09218-8d1d-4106-aefc-c118353ad3d5
+		summarizeBy: none
+		sourceColumn: Cust Name & No
+
+		annotation SummarizationSetBy = Automatic
+
+	column Division
+		dataType: string
+		lineageTag: 2986e883-d3de-42d0-9c88-ab8e1e61611a
+		summarizeBy: none
+		sourceColumn: Division
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 04e6e644-08e9-4d48-a0f8-5da6f99bc502
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Account Manager'
+		dataType: string
+		lineageTag: ffd062ef-91c4-400f-98fd-97feb560aedf
+		summarizeBy: none
+		sourceColumn: Account Manager
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Group'
+		dataType: string
+		lineageTag: f9bc0d4f-f878-42e4-acd8-310ec39835f4
+		summarizeBy: none
+		sourceColumn: Customer Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column Branch
+		dataType: string
+		lineageTag: 131c373e-e2dd-4227-a043-7d0035d71250
+		summarizeBy: none
+		sourceColumn: Branch
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'AX Invoicing Group'
+		dataType: string
+		lineageTag: 4a5dcba2-bdd6-43cc-a4ec-56abd7e49f33
+		summarizeBy: none
+		sourceColumn: AX Invoicing Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Type'
+		dataType: string
+		lineageTag: 54b0f78d-edb7-4d71-aa3a-49b6827f4cbf
+		summarizeBy: none
+		sourceColumn: Customer Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Administrator
+		dataType: string
+		lineageTag: a02685f4-35aa-446d-b8bd-ece567aceaf3
+		summarizeBy: none
+		sourceColumn: Administrator
+
+		annotation SummarizationSetBy = Automatic
+
+	column Coordinator
+		dataType: string
+		lineageTag: 4f5352e3-1027-4a18-ac26-cf4dd62426c7
+		summarizeBy: none
+		sourceColumn: Coordinator
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fuel Levy Group'
+		dataType: string
+		lineageTag: 3cd2fb79-d677-4806-8f10-03a2777da417
+		summarizeBy: none
+		sourceColumn: Fuel Levy Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Invoice Group'
+		dataType: string
+		lineageTag: 94667eb3-554f-4512-8c8a-f6f5f325dc34
+		summarizeBy: none
+		sourceColumn: Invoice Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Invoice Run Group'
+		dataType: string
+		lineageTag: c15c1f7a-833e-442f-8c7e-8c7866994ed8
+		summarizeBy: none
+		sourceColumn: Invoice Run Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Entity (Customer)'
+		dataType: string
+		lineageTag: 7ccb47c9-edc0-46a2-8186-8799d8da2245
+		summarizeBy: none
+		sourceColumn: Entity (Customer)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Account Created Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d1dd673c-9c9d-4932-b62b-6ff6fc69f47c
+		summarizeBy: none
+		sourceColumn: Account Created Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Category 2'
+		dataType: string
+		lineageTag: 176a6514-f85a-4978-b228-f8b08f4db1a8
+		summarizeBy: none
+		sourceColumn: Category 2
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'CUSTOMER DIM-923e7e33-ccd8-467f-a379-5689b4f81027' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("192.168.0.28", "DataWarehouse", [Query="WITH accounts_fuel_levy AS (#(lf)SELECT inv.[ID]#(lf)      ,[AccountGroupID]#(lf)      ,inv.[AccountNumber]#(lf)      ,inv.[Active]#(lf)#(tab)  ,ac.GroupName AS fuelLevyGroup#(lf)#(tab)  ,acinv.GroupName AS InvoiceGroup#(lf)#(tab)  ,acinvrn.GroupName AS InvoiceRunGroup#(lf)#(tab)  #(lf)#(tab) -- ,ROW_NUMBER() OVER(PARTITION BY AccountNumber ORDER BY ac.GroupName DESC) AS order_#(lf)  FROM [DataWarehouse].[dbo].[BOINV_InvoiceAccount] inv#(lf)  LEFT JOIN (SELECT *#(lf)#(tab)#(tab)#(tab)FROM BOINV_AccountGroup ac #(lf)#(tab)#(tab)#(tab)WHERE ac.Type = 'FuelLevy'#(lf)#(tab)#(tab)#(tab)AND ac.Active = 1) ac#(lf)  ON inv.AccountGroupID = ac.ID#(lf)  #(lf)  #(lf)  LEFT JOIN (SELECT GroupName,AccountNumber#(lf)#(tab)#(tab)#(tab)#(tab)FROM BOINV_AccountGroup boag#(lf)#(tab)#(tab)#(tab)#(tab)JOIN BOINV_InvoiceAccount boia ON boia.AccountGroupID = boag.ID#(lf)#(tab)#(tab)#(tab)#(tab)WHERE Type = 'Invoice'#(lf)#(tab)#(tab)#(tab)#(tab)AND boia.active = 1#(lf)#(tab)#(tab)#(tab)#(tab)--AND GroupName LIKE '%A - Z'#(lf)#(tab)#(tab)#(tab)#(tab)) acinv#(lf)#(tab)ON inv.AccountNumber = acinv.AccountNumber#(lf)#(tab)--WHERE acinv.GroupName IS NOT NULL AND inv.Active = 1#(lf)#(lf)  LEFT JOIN (SELECT GroupName,AccountNumber #(lf)#(tab)#(tab)#(tab)#(tab)FROM BOINV_AccountGroup boag#(lf)#(tab)#(tab)#(tab)#(tab)JOIN BOINV_InvoiceAccount boia ON boia.AccountGroupID = boag.ID#(lf)#(tab)#(tab)#(tab)#(tab)WHERE Type = 'InvoiceRun'#(lf)#(tab)#(tab)#(tab)#(tab)AND boia.active = 1#(lf)#(tab)#(tab)#(tab)#(tab)--AND GroupName LIKE '%A - Z'#(lf)#(tab)#(tab)#(tab)#(tab)) acinvrn#(lf)#(tab)ON inv.AccountNumber = acinvrn.AccountNumber#(lf)#(tab)--WHERE acinvrn.GroupName IS NOT NULL AND inv.Active = 1#(lf)  #(lf)  WHERE ac.GroupName IS NOT NULL#(lf)  AND inv.Active = 1#(lf)#(lf)#(lf)  )#(lf) #(lf) --select * from accounts_fuel_levy where AccountNumber = 6078#(lf)#(lf)#(lf)SELECT wmc_master.account_no,#(lf)#(tab)account_name,#(lf)#(tab)AxCustomerAccountCode,#(lf)#(tab)ISNULL(I.[AX Invoicing Group],'NA') 'AX Invoicing Group',#(lf)#(tab)COALESCE(ac.fuelLevyGroup,'Not Configured') AS [Fuel Levy Group]#(lf)#(tab),COALESCE(ac.InvoiceGroup,'Not Configured') AS [Invoice Group]#(lf)#(tab),COALESCE(ac.InvoiceRunGroup,'Not Configured') AS [Invoice Run Group]#(lf)#(tab)--,CASE WHEN wmx.AXEntityID = 1 THEN 'CENTURION' WHEN wmx.AXEntityID = 2 THEN 'CENTURION CENTRAL' ELSE 'UNDEFINED' END AS 'CustomerEntity'#(lf)#(tab)--,wmx.AXEntityID#(lf)#(tab)--,axc.dataareaid#(lf)#(tab),axc.entityName 'Entity (Customer)'#(lf)#(tab),axcust.[Account Created Date] AS 'Account Created Date'#(lf)#(lf)FROM wmc_master#(lf)LEFT JOIN  (SELECT DISTINCT CustomerAccount,CustomerGroup AS'AX Invoicing Group'FROM CustomerMaster) I#(lf)ON I.CustomerAccount=wmc_master.AxCustomerAccountCode COLLATE Database_Default #(lf)LEFT JOIN  accounts_fuel_levy ac#(lf)ON ac.AccountNumber = wmc_master.account_no#(lf)--LEFT JOIN wmc_master_extra wmx on wmx.account_no = wmc_master.account_no#(lf)left join ax_custtable axc on axc.ACCOUNTNUM COLLATE DATABASE_DEFAULT = wmc_master.AxCustomerAccountCode COLLATE DATABASE_DEFAULT#(lf)#(lf)LEFT JOIN#(lf)#(tab)(select TRY_CONVERT(INTEGER,RIGHT(ACCOUNTNUM,LEN(ACCOUNTNUM)-1)) 'Account Number', CAST(CREATEDDATETIME AS DATE) 'Account Created Date' from AX_CustTable where LEFT(ACCOUNTNUM,1) = 'C' AND TRY_CONVERT(INTEGER,RIGHT(ACCOUNTNUM,LEN(ACCOUNTNUM)-1)) IS NOT NULL) AS axcust on axcust.[Account Number] = wmc_master.account_no#(lf)#(lf)--WHERE ac.AccountNumber = '6078'#(lf)#(lf)--where ac.InvoiceRunGroup NOT IN ('Not Configured')#(lf)--and I.[AX Invoicing Group] NOT IN ('NA')#(lf)#(lf)", CommandTimeout=#duration(0, 2, 0, 0)]),
+				    #"Sorted Rows" = Table.Sort(Source,{{"account_no", Order.Ascending}}),
+				    #"Inserted Merged Column" = Table.AddColumn(#"Sorted Rows", "Cust Name & No", each Text.Combine({[account_name], " - ", [account_no]}), type text),
+				    #"Renamed Columns" = Table.RenameColumns(#"Inserted Merged Column",{ {"account_no", "Account No"}, {"account_name", "Account Name"}}),
+				    #"Added Conditional Column1" = Table.AddColumn(#"Renamed Columns", "AX Flag", each if [AxCustomerAccountCode] = null then "No" else "Yes", type text),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Conditional Column1",{{"Account No", Int64.Type}}),
+				    #"Merged Queries" = Table.NestedJoin(#"Changed Type", {"Account No"}, #"Account Manager Mapping", {"Account Number"}, "Query1", JoinKind.LeftOuter),
+				    #"Expanded Query1" = Table.ExpandTableColumn(#"Merged Queries", "Query1", {"Customer Group", "East/West", "Branch", "Customer Type", "Category", "Category 2", "Account Manager", "Administrator", "Coordinator"}, {"Customer Group", "East/West", "Branch", "Customer Type", "Category", "Category 2", "Account Manager", "Administrator", "Coordinator"}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Expanded Query1",null,"NA",Replacer.ReplaceValue,{"AX Invoicing Group"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value",null,"Not Supplied",Replacer.ReplaceValue,{"Customer Group"}),
+				    #"Replaced Value2" = Table.ReplaceValue(#"Replaced Value1",null,"Not Supplied",Replacer.ReplaceValue,{"East/West"}),
+				    #"Replaced Value3" = Table.ReplaceValue(#"Replaced Value2",null,"Not Supplied",Replacer.ReplaceValue,{"Branch"}),
+				    #"Replaced Value4" = Table.ReplaceValue(#"Replaced Value3",null,"Not Supplied",Replacer.ReplaceValue,{"Category"}),
+				    #"Replaced Value5" = Table.ReplaceValue(#"Replaced Value4",null,"Not Supplied",Replacer.ReplaceValue,{"Account Manager"}),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Replaced Value5",{{"East/West", "Division"}}),
+				    #"Replaced Value6" = Table.ReplaceValue(#"Renamed Columns1",null,"Not Supplied",Replacer.ReplaceValue,{"Customer Type"}),
+				    #"Replaced Value7" = Table.ReplaceValue(#"Replaced Value6",null,"Not Supplied",Replacer.ReplaceValue,{"Administrator"}),
+				    #"Replaced Value8" = Table.ReplaceValue(#"Replaced Value7",null,"Not Supplied",Replacer.ReplaceValue,{"Coordinator"}),
+				    #"Appended Query" = Table.Combine({#"Replaced Value8", DimProductOthers}),
+				    #"Removed Duplicates" = Table.Distinct(#"Appended Query", {"Account No"}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Removed Duplicates",{{"Account Created Date", type date}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_ResultType = Table
+

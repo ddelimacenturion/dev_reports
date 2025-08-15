@@ -1,0 +1,78 @@
+relationship df67e773-d59c-4322-a38e-d684cf79656b
+	fromColumn: 'CONNOTE FACT'.DespatchDate
+	toColumn: 'DATE DIM'.Date
+
+relationship 1759f9d3-8f4a-413d-98f2-eca2c672db1a
+	fromColumn: 'CONNOTE FACT'.Account
+	toColumn: 'CUSTOMER DIM'.'Account No'
+
+relationship 9148c408-6e96-408c-a92d-c08913890aa9
+	fromColumn: 'CONNOTE FACT'.'TripNo - Trailer'
+	toColumn: 'TRIP & TRAILER DIM'.'TripNo - Trailer'
+
+relationship 2299118c-6c09-4e40-ad04-c9e0c48d0d5b
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'CUSTOMER DIM'.'Account No'
+	toColumn: 'Rate Card DIM'.AccountNumber
+
+relationship 018e3178-c4a0-4bfd-bd0a-cf217a7ea7be
+	fromColumn: 'CONNOTE FACT'.trip_no
+	toColumn: 'TRIP FACT'.trip_no
+
+relationship 95b998ec-c66e-4974-b008-fbf27299d5d2
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'CONNOTE FACT'.c_notes_id
+	toColumn: 'CONNOTE DIM'.'C Note ID'
+
+relationship 310d03a4-bc67-44af-864d-4d75bf028fc8
+	fromColumn: 'CONNOTE FACT'.'Invoice Date'
+	toColumn: 'INVOICE DATE DIM'.'Invoice Date'
+
+relationship bc294819-7ff5-47ee-9362-801a495ebab2
+	fromColumn: 'CONNOTE DIM'.CargoType
+	toColumn: 'Cargo Type Mapping'.CargoType
+
+relationship 0426c883-832d-4b0b-9a13-18bb30f30405
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'CONNOTE DIM'.Destination
+	toColumn: 'BRANCH DIM'.Destination
+
+relationship bc223367-0c15-4ca8-a4c6-88905a825bea
+	fromColumn: 'Account Manager Comments'.Date
+	toColumn: 'INVOICE DATE DIM'.'Invoice Date'
+
+relationship 710c9b4e-075f-4c70-ba61-b207b19a78c4
+	fromColumn: 'Account Manager Comments'.'Account Number'
+	toColumn: 'CUSTOMER DIM'.'Account No'
+
+relationship 45178dbc-a871-4df6-9134-50c9293daa6a
+	fromColumn: 'CONNOTE FACT'.'Connote Created Date'
+	toColumn: 'Created DATE DIM'.'Created Date'
+
+relationship ce3b7e13-055d-4deb-b0c3-69067794029e
+	fromColumn: 'CONNOTE DIM'.Origin
+	toColumn: 'Origin BRANCH DIM'.Origin
+
+relationship ce21f064-783f-44e7-aa4b-7d0316f91c97
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'Rio Branch Proportions'.Destination
+	toColumn: 'BRANCH DIM'.Destination
+
+relationship 9bd7db44-1efa-4733-ade0-2c5d1aafe6da
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'Cost Centre Mapping'.Description
+	toColumn: 'BRANCH DIM'.Destination
+
+relationship 45be2810-4068-42a3-8c3c-b7adf64c0a3c
+	fromColumn: 'TRIP FACT'.Subcontractor
+	toColumn: 'Vendor DIM'.'Vendor Account Number'
+
+relationship 5c2baf84-7277-4f5f-93d4-9986dccbf64c
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'CUSTOMER DIM'.'Account No'
+	toColumn: 'Jurisdiction Mapping - DNU'.account_no
+

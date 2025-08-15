@@ -1,0 +1,88 @@
+table 'Cost Centre Mapping'
+	isHidden
+	lineageTag: fd677796-55d3-455b-b39e-4ebf2103b50c
+
+	column 'Rule Type'
+		dataType: string
+		isHidden
+		lineageTag: 772a5667-7675-42d0-9779-e265ddcbb4c0
+		summarizeBy: none
+		sourceColumn: Rule Type
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Code Type'
+		dataType: string
+		isHidden
+		lineageTag: 310cb5d8-69b5-4bab-9153-5b85d9ca673a
+		summarizeBy: none
+		sourceColumn: Code Type
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Code
+		dataType: string
+		isHidden
+		lineageTag: 54759be1-2d6d-42f2-9644-6b4bdceb70b4
+		summarizeBy: none
+		sourceColumn: Code
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		isHidden
+		lineageTag: 3287623d-8908-4730-b359-41368d344aff
+		summarizeBy: none
+		sourceColumn: Description
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Cost Centre'
+		dataType: string
+		isHidden
+		lineageTag: c3928146-7dd4-41fa-b2c1-e99e02c05680
+		summarizeBy: none
+		sourceColumn: Cost Centre
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Location CostCentre'
+		dataType: string
+		isHidden
+		lineageTag: 98d098d2-7766-492c-97b8-997f31a2d098
+		summarizeBy: none
+		sourceColumn: Location CostCentre
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Cost Centre Mapping' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("\\ctchzlbi-gate01.ad.centurion.net.au\Shared\Finance\Coding Rules\CodingRules.xlsx"), null, true),
+				    Sheet_Sheet = Source{[Item="Sheet",Kind="Sheet"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Sheet_Sheet,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}, {"Column4", type text}, {"Column5", type text}, {"Column6", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Filtered Rows" = Table.SelectRows(#"Promoted Headers", each ([Code Type] = "Destination")),
+				    #"Removed Duplicates" = Table.Distinct(#"Filtered Rows", {"Description"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Removed Duplicates",{{"Cost Centre/ Proc. Category ", "Cost Centre"}})
+				in
+				    #"Renamed Columns"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+
