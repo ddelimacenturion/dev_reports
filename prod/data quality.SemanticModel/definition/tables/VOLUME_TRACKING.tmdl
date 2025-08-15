@@ -1,0 +1,64 @@
+table VOLUME_TRACKING
+	lineageTag: bc930da4-f3af-43ec-91d2-f99d4d3e736e
+
+	column DATABASE_NAME
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 58e0f7b8-b746-4bcc-95d9-e3d14e3bad8f
+		summarizeBy: none
+		sourceColumn: DATABASE_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column SCHEMA_NAME
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: f7795909-992f-40d7-a75a-e492f236ae00
+		summarizeBy: none
+		sourceColumn: SCHEMA_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column TABLE_NAME
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: c488a27e-5f6b-4d62-9ab5-28a6def65b4f
+		summarizeBy: none
+		sourceColumn: TABLE_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column ROW_COUNT
+		dataType: double
+		sourceProviderType: decimal(38, 0)
+		lineageTag: cef9249f-5cee-4f57-ad5d-46497202a24f
+		summarizeBy: sum
+		sourceColumn: ROW_COUNT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column RECORDED_AT
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: ad9b4474-4d94-4ab9-baec-10ace5396b59
+		summarizeBy: none
+		sourceColumn: RECORDED_AT
+
+		annotation SummarizationSetBy = Automatic
+
+	partition VOLUME_TRACKING = m
+		mode: directQuery
+		source =
+				let
+				    Source = Snowflake.Databases("A1575471749171-SD82318.snowflakecomputing.com","COMPUTE_WH",[Implementation="2.0"]),
+				    MONITORING_Database = Source{[Name="MONITORING",Kind="Database"]}[Data],
+				    DA_Schema = MONITORING_Database{[Name="DA",Kind="Schema"]}[Data],
+				    VOLUME_TRACKING_Table = DA_Schema{[Name="VOLUME_TRACKING",Kind="Table"]}[Data]
+				in
+				    VOLUME_TRACKING_Table
+
+	annotation PBI_ResultType = Table
+

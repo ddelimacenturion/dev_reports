@@ -1,0 +1,56 @@
+table FRESHNESS_CHECKPOINT
+	lineageTag: b08d10a1-6b8a-437a-ae88-8b150664490b
+
+	column DATABASE_NAME
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: a9752f2e-b090-452a-b02b-d8e827a9b6df
+		summarizeBy: none
+		sourceColumn: DATABASE_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column SCHEMA_NAME
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 4fc69719-cacf-4eb4-b768-5f555b328e8f
+		summarizeBy: none
+		sourceColumn: SCHEMA_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column TABLE_NAME
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: c3ca22c9-006a-4954-a67a-1e39f73a9f47
+		summarizeBy: none
+		sourceColumn: TABLE_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column LAST_SYNCED
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: e3128014-f2f6-4601-8d61-7d8f7460122c
+		summarizeBy: none
+		sourceColumn: LAST_SYNCED
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FRESHNESS_CHECKPOINT = m
+		mode: directQuery
+		source =
+				let
+				    Source = Snowflake.Databases("A1575471749171-SD82318.snowflakecomputing.com","COMPUTE_WH",[Implementation="2.0"]),
+				    MONITORING_Database = Source{[Name="MONITORING",Kind="Database"]}[Data],
+				    DA_Schema = MONITORING_Database{[Name="DA",Kind="Schema"]}[Data],
+				    FRESHNESS_CHECKPOINT_Table = DA_Schema{[Name="FRESHNESS_CHECKPOINT",Kind="Table"]}[Data]
+				in
+				    FRESHNESS_CHECKPOINT_Table
+
+	annotation PBI_ResultType = Table
+

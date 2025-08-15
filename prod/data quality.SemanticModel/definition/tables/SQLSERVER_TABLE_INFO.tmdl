@@ -1,0 +1,74 @@
+table SQLSERVER_TABLE_INFO
+	lineageTag: d18376c5-34bd-4334-a193-e0d7b0d7cea9
+
+	column DATABASE_NAME
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 763b1693-a670-432e-8776-03dd7dc93f38
+		summarizeBy: none
+		sourceColumn: DATABASE_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column SCHEMA_NAME
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 0a8b7308-2ff8-41fa-9502-7dc22def8ff0
+		summarizeBy: none
+		sourceColumn: SCHEMA_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column TABLE_NAME
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 1b7ffb1b-3539-4dfd-b369-413e73c8a6c6
+		summarizeBy: none
+		sourceColumn: TABLE_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column ROW_COUNT
+		dataType: double
+		sourceProviderType: decimal(38, 0)
+		lineageTag: 4826b675-3135-4e74-bc51-f973ef33052e
+		summarizeBy: sum
+		sourceColumn: ROW_COUNT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LAST_DATE_UPDATED
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 19ed2f36-2a8a-4e1a-9730-b40d41e08d94
+		summarizeBy: none
+		sourceColumn: LAST_DATE_UPDATED
+
+		annotation SummarizationSetBy = Automatic
+
+	column INGESTED_DATE
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: fefbb342-5862-4c2f-9e5b-3781ae174558
+		summarizeBy: none
+		sourceColumn: INGESTED_DATE
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SQLSERVER_TABLE_INFO = m
+		mode: directQuery
+		source =
+				let
+				    Source = Snowflake.Databases("A1575471749171-SD82318.snowflakecomputing.com","COMPUTE_WH",[Implementation="2.0"]),
+				    MONITORING_Database = Source{[Name="MONITORING",Kind="Database"]}[Data],
+				    DA_Schema = MONITORING_Database{[Name="DA",Kind="Schema"]}[Data],
+				    SQLSERVER_TABLE_INFO_Table = DA_Schema{[Name="SQLSERVER_TABLE_INFO",Kind="Table"]}[Data]
+				in
+				    SQLSERVER_TABLE_INFO_Table
+
+	annotation PBI_ResultType = Table
+

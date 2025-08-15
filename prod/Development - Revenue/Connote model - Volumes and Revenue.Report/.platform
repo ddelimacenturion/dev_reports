@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Connote model - Volumes and Revenue"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "119fbade-4df0-8c7f-4987-ad541dff95fb"
+  }
+}

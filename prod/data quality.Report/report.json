@@ -1,0 +1,81 @@
+{
+  "config": "{\"version\":\"5.59\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY24SU10\",\"version\":\"5.65\",\"type\":2}},\"activeSectionIndex\":0,\"defaultDrillFilterOtherVisuals\":true,\"settings\":{\"useNewFilterPaneExperience\":true,\"allowChangeFilterTypes\":true,\"useStylableVisualContainerHeader\":true,\"queryLimitOption\":6,\"exportDataMode\":1,\"useDefaultAggregateDisplayName\":true},\"objects\":{\"section\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Top'\"}}}}}]}}",
+  "layoutOptimization": 0,
+  "resourcePackages": [
+    {
+      "resourcePackage": {
+        "disabled": false,
+        "items": [
+          {
+            "name": "CY24SU10",
+            "path": "BaseThemes/CY24SU10.json",
+            "type": 202
+          }
+        ],
+        "name": "SharedResources",
+        "type": 2
+      }
+    }
+  ],
+  "sections": [
+    {
+      "config": "{}",
+      "displayName": "Dashboard",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "62e54b690595307dc516",
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"0c1bcb4448123b019da7\",\"layouts\":[{\"id\":0,\"position\":{\"x\":9.605521030503024,\"y\":0,\"z\":2,\"width\":437.7373155329235,\"height\":720.4140772877269,\"tabOrder\":2}}],\"singleVisual\":{\"visualType\":\"pieChart\",\"projections\":{\"Category\":[{\"queryRef\":\"DAILY_TABLE_HEALTH.CHECK_STATUS\",\"active\":true}],\"Y\":[{\"queryRef\":\"CountNonNull(DAILY_TABLE_HEALTH.CHECK_VALUE)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DAILY_TABLE_HEALTH\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"CHECK_STATUS\"},\"Name\":\"DAILY_TABLE_HEALTH.CHECK_STATUS\",\"NativeReferenceName\":\"CHECK_STATUS\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"CHECK_VALUE\"}},\"Function\":5},\"Name\":\"CountNonNull(DAILY_TABLE_HEALTH.CHECK_VALUE)\",\"NativeReferenceName\":\"Count of CHECK_VALUE\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"CHECK_VALUE\"}},\"Function\":5}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"objects\":{\"dataPoint\":[{\"properties\":{\"fill\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#FC1123'\"}}}}}},\"selector\":{\"data\":[{\"scopeId\":{\"Comparison\":{\"ComparisonKind\":0,\"Left\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"DAILY_TABLE_HEALTH\"}},\"Property\":\"CHECK_STATUS\"}},\"Right\":{\"Literal\":{\"Value\":\"'FAIL'\"}}}}}]}},{\"properties\":{\"fill\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#35E661'\"}}}}}},\"selector\":{\"data\":[{\"scopeId\":{\"Comparison\":{\"ComparisonKind\":0,\"Left\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"DAILY_TABLE_HEALTH\"}},\"Property\":\"CHECK_STATUS\"}},\"Right\":{\"Literal\":{\"Value\":\"'PASS'\"}}}}}]}}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Status'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 720.41,
+          "width": 437.74,
+          "x": 9.61,
+          "y": 0.00,
+          "z": 2.00
+        },
+        {
+          "config": "{\"name\":\"1151206428e1cea554cc\",\"layouts\":[{\"id\":0,\"position\":{\"x\":436.3650982428517,\"y\":12.349955610646745,\"z\":3,\"width\":843.9136333941942,\"height\":708.06412167708,\"tabOrder\":3}}],\"singleVisual\":{\"visualType\":\"clusteredColumnChart\",\"projections\":{\"Category\":[{\"queryRef\":\"DAILY_TABLE_HEALTH.CHECK_TYPE\",\"active\":true}],\"Series\":[{\"queryRef\":\"DAILY_TABLE_HEALTH.CHECK_STATUS\"}],\"Y\":[{\"queryRef\":\"CountNonNull(DAILY_TABLE_HEALTH.CHECK_VALUE)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DAILY_TABLE_HEALTH\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"CHECK_TYPE\"},\"Name\":\"DAILY_TABLE_HEALTH.CHECK_TYPE\",\"NativeReferenceName\":\"CHECK_TYPE\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"CHECK_STATUS\"},\"Name\":\"DAILY_TABLE_HEALTH.CHECK_STATUS\",\"NativeReferenceName\":\"CHECK_STATUS\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"CHECK_VALUE\"}},\"Function\":5},\"Name\":\"CountNonNull(DAILY_TABLE_HEALTH.CHECK_VALUE)\",\"NativeReferenceName\":\"CHECK_VALUE\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"CHECK_VALUE\"}},\"Function\":5}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"objects\":{}}}",
+          "filters": "[]",
+          "height": 708.06,
+          "width": 843.91,
+          "x": 436.37,
+          "y": 12.35,
+          "z": 3.00
+        },
+        {
+          "config": "{\"name\":\"e5e197aa9a115b6bed47\",\"layouts\":[{\"id\":0,\"position\":{\"x\":10,\"y\":290,\"width\":280,\"height\":280,\"z\":1,\"tabOrder\":1}}],\"singleVisual\":{\"visualType\":\"textbox\",\"autoSelectVisualType\":false,\"drillFilterOtherVisuals\":true,\"objects\":{}},\"howCreated\":\"SummarizeVisualContainer\"}",
+          "filters": "[]",
+          "height": 280.00,
+          "width": 280.00,
+          "x": 10.00,
+          "y": 290.00,
+          "z": 1.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
+      "config": "{}",
+      "displayName": "Details",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "80e8bc71be15dc780965",
+      "ordinal": 1,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"1a0d9f2f41060e8038cc\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":0,\"z\":0,\"width\":1280.278731637046,\"height\":720.4140772877269,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"DAILY_TABLE_HEALTH.DATABASE_NAME\"},{\"queryRef\":\"DAILY_TABLE_HEALTH.SCHEMA_NAME\"},{\"queryRef\":\"DAILY_TABLE_HEALTH.TABLE_NAME\"},{\"queryRef\":\"DAILY_TABLE_HEALTH.CHECK_TYPE\"},{\"queryRef\":\"DAILY_TABLE_HEALTH.CHECK_STATUS\"},{\"queryRef\":\"DAILY_TABLE_HEALTH.CHECK_DETAILS\"},{\"queryRef\":\"DAILY_TABLE_HEALTH.DESCRIPTION\"},{\"queryRef\":\"DAILY_TABLE_HEALTH.DQ_RULES_FILE\"},{\"queryRef\":\"DAILY_TABLE_HEALTH.QUERY_EXECUTED\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DAILY_TABLE_HEALTH\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"DATABASE_NAME\"},\"Name\":\"DAILY_TABLE_HEALTH.DATABASE_NAME\",\"NativeReferenceName\":\"DATABASE_NAME\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"SCHEMA_NAME\"},\"Name\":\"DAILY_TABLE_HEALTH.SCHEMA_NAME\",\"NativeReferenceName\":\"SCHEMA_NAME\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"TABLE_NAME\"},\"Name\":\"DAILY_TABLE_HEALTH.TABLE_NAME\",\"NativeReferenceName\":\"TABLE_NAME\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"CHECK_TYPE\"},\"Name\":\"DAILY_TABLE_HEALTH.CHECK_TYPE\",\"NativeReferenceName\":\"CHECK_TYPE\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"CHECK_STATUS\"},\"Name\":\"DAILY_TABLE_HEALTH.CHECK_STATUS\",\"NativeReferenceName\":\"CHECK_STATUS\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"CHECK_DETAILS\"},\"Name\":\"DAILY_TABLE_HEALTH.CHECK_DETAILS\",\"NativeReferenceName\":\"CHECK_DETAILS\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"DESCRIPTION\"},\"Name\":\"DAILY_TABLE_HEALTH.DESCRIPTION\",\"NativeReferenceName\":\"DESCRIPTION\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"DQ_RULES_FILE\"},\"Name\":\"DAILY_TABLE_HEALTH.DQ_RULES_FILE\",\"NativeReferenceName\":\"DQ_RULES_FILE\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"QUERY_EXECUTED\"},\"Name\":\"DAILY_TABLE_HEALTH.QUERY_EXECUTED\",\"NativeReferenceName\":\"QUERY_EXECUTED\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"grid\":[{\"properties\":{\"gridHorizontalColor\":{\"solid\":{\"color\":{\"expr\":{\"ThemeDataColor\":{\"ColorId\":2,\"Percent\":0}}}}},\"gridVertical\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}],\"columnHeaders\":[{\"properties\":{\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"ThemeDataColor\":{\"ColorId\":2,\"Percent\":0}}}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 720.41,
+          "width": 1280.28,
+          "x": 0.00,
+          "y": 0.00,
+          "z": 0.00
+        }
+      ],
+      "width": 1280.00
+    }
+  ]
+}

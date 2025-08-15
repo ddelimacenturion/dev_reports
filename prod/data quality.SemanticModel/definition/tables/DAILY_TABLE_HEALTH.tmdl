@@ -1,0 +1,134 @@
+table DAILY_TABLE_HEALTH
+	lineageTag: 2f418cd5-2f36-4dd8-ab8b-382cf2f0dfe4
+
+	column DATABASE_NAME
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 6dc498d4-aab0-4582-9118-83541ac9cadd
+		summarizeBy: none
+		sourceColumn: DATABASE_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column SCHEMA_NAME
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 4558ccae-e774-43a0-8b36-1e63b65fe74d
+		summarizeBy: none
+		sourceColumn: SCHEMA_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column TABLE_NAME
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 14db62b8-f356-4ba7-910c-157b6aec5327
+		summarizeBy: none
+		sourceColumn: TABLE_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column CHECK_TYPE
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 924b0da6-1bc6-4ad5-909b-fb15bb447e36
+		summarizeBy: none
+		sourceColumn: CHECK_TYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column DESCRIPTION
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: bc318c3b-3102-462b-a031-b00410f1540f
+		summarizeBy: none
+		sourceColumn: DESCRIPTION
+
+		annotation SummarizationSetBy = Automatic
+
+	column CHECK_STATUS
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 23f799d2-5d51-47b7-a73d-06752ac8109e
+		summarizeBy: none
+		sourceColumn: CHECK_STATUS
+
+		annotation SummarizationSetBy = Automatic
+
+	column CHECK_VALUE
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: e9cb1234-f1db-4d33-a664-1ddd55965a32
+		summarizeBy: none
+		sourceColumn: CHECK_VALUE
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEND_ALERT
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 930b607f-c9dc-4e09-870e-b9a20415d23c
+		summarizeBy: none
+		sourceColumn: SEND_ALERT
+
+		annotation SummarizationSetBy = Automatic
+
+	column CHECK_DETAILS
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 76c01477-bf6a-4434-8bbe-f766d65c27de
+		summarizeBy: none
+		sourceColumn: CHECK_DETAILS
+
+		annotation SummarizationSetBy = Automatic
+
+	column QUERY_EXECUTED
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: b6161cf0-6e76-4764-8418-179cb5492511
+		summarizeBy: none
+		sourceColumn: QUERY_EXECUTED
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEVERITY
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: e0b77a0a-b07c-4e22-87de-98d5c166e749
+		summarizeBy: none
+		sourceColumn: SEVERITY
+
+		annotation SummarizationSetBy = Automatic
+
+	column DQ_RULES_FILE
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 785e057c-0e4f-44ee-b646-550b978477c2
+		summarizeBy: none
+		sourceColumn: DQ_RULES_FILE
+
+		annotation SummarizationSetBy = Automatic
+
+	column CHECKED_AT
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 276b5677-2115-4e1a-b5f1-f7c5717b4ca5
+		summarizeBy: none
+		sourceColumn: CHECKED_AT
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DAILY_TABLE_HEALTH = m
+		mode: directQuery
+		source =
+				let
+				    Source = Snowflake.Databases("A1575471749171-SD82318.snowflakecomputing.com","COMPUTE_WH",[Implementation="2.0"]),
+				    MONITORING_Database = Source{[Name="MONITORING",Kind="Database"]}[Data],
+				    DA_Schema = MONITORING_Database{[Name="DA",Kind="Schema"]}[Data],
+				    DAILY_TABLE_HEALTH_Table = DA_Schema{[Name="DAILY_TABLE_HEALTH",Kind="Table"]}[Data]
+				in
+				    DAILY_TABLE_HEALTH_Table
+
+	annotation PBI_ResultType = Table
+

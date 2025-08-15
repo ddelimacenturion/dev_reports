@@ -1,0 +1,29 @@
+{
+  "name": "Custom",
+  "textClasses": {
+    "label": {
+      "fontFace": "Calibri"
+    },
+    "callout": {
+      "fontFace": "Calibri"
+    },
+    "title": {
+      "fontFace": "Calibri"
+    },
+    "header": {
+      "fontFace": "Calibri"
+    }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "border": [
+          {
+            "show": false,
+            "radius": 5
+          }
+        ]
+      }
+    }
+  }
+}
